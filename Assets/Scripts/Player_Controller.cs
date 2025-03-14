@@ -69,7 +69,7 @@ public class Player_Controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Enemy"))
+        if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("EnemyBullet"))
         {
             HP -= enemy.damage;
             if (HP <= 0)

@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - "GunPadr\xE3o"
   - Smg
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
