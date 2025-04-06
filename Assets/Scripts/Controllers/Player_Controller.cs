@@ -9,10 +9,16 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float DashSpeed;
     float speedAtual;
     public int contador = 0;
+    private Animator anim;
+    public bool WalkDir;
+    public bool WalkEsq;
+    public bool StopWalkDir;
+    public bool StopWalkEsq;
+
 
     public ItemPickUp itemPickUp;
-
-    public List<GameObject> armas = new List<GameObject>();
+    public Transform coldre;
+    public Transform coldreSecundário;
 
     public int Coin;
 
@@ -24,12 +30,23 @@ public class Player_Controller : MonoBehaviour
 
     public bool isDead;
     bool isDash;
-    Vector2 mov;
+    public Vector2 mov;
 
     private void Start()
     {
         speedAtual = speed;
+        anim = GetComponent<Animator>();
+
+        // Verifica se há uma arma no coldre secundário ao iniciar o jogo
+        if (coldreSecundário.childCount <= 0)
+        {
+            coldreSecundário.gameObject.SetActive(false);
+        }
+        Vector2Int spawnPos = FindObjectOfType<RoomFirstDungeonGenerator>().playerSpawnPosition;
+        transform.position = new Vector3(spawnPos.x + 0.5f, spawnPos.y + 0.5f, 0);
+
     }
+
 
     // Update is called once per frame
     void Update()
@@ -49,8 +66,14 @@ public class Player_Controller : MonoBehaviour
             Invoke("PosDash", 0.1f);
         }
 
-        AtualizarArmas(); // Mantém a lista sempre atualizada
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TrocarArma();
+        }
+
+        UpdateAnimator();
     }
+
 
     private void FixedUpdate()
     {
@@ -87,16 +110,76 @@ public class Player_Controller : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Método para atualizar a lista de armas do jogador
-    void AtualizarArmas()
+    void UpdateAnimator()
     {
-        if (itemPickUp != null)
+        if (mov.x > 0) // Movendo para a direita
         {
-            armas.Clear(); // Limpa a lista antes de atualizar
-            if (itemPickUp.armaPrincipal != null)
-                armas.Add(itemPickUp.armaPrincipal);
-            if (itemPickUp.armaSecundaria != null)
-                armas.Add(itemPickUp.armaSecundaria);
+            WalkDir = true;
+            WalkEsq = false;
+            StopWalkDir = false;
+            StopWalkEsq = false;
+
+            anim.SetBool("WalkDir", true);
+            anim.SetBool("WalkEsq", false);
+            anim.SetBool("StopWalkDir", false);
+            anim.SetBool("StopWalkEsq", false);
+        }
+        else if (mov.x < 0) // Movendo para a esquerda
+        {
+            WalkEsq = true;
+            WalkDir = false;
+            StopWalkDir = false;
+            StopWalkEsq = false;
+
+            anim.SetBool("WalkEsq", true);
+            anim.SetBool("WalkDir", false);
+            anim.SetBool("StopWalkDir", false);
+            anim.SetBool("StopWalkEsq", false);
+        }
+        else // Jogador parou
+        {
+            if (WalkDir) // Se estava indo para a direita
+            {
+                StopWalkDir = true;
+                StopWalkEsq = false;
+            }
+            else if (WalkEsq) // Se estava indo para a esquerda
+            {
+                StopWalkEsq = true;
+                StopWalkDir = false;
+            }
+
+            WalkDir = false;
+            WalkEsq = false;
+
+            anim.SetBool("WalkDir", false);
+            anim.SetBool("WalkEsq", false);
+            anim.SetBool("StopWalkDir", StopWalkDir);
+            anim.SetBool("StopWalkEsq", StopWalkEsq);
         }
     }
+    void TrocarArma()
+    {
+        if (coldre.childCount > 0 && coldreSecundário.childCount > 0) // Verifica se há duas armas equipadas
+        {
+            Transform armaPrincipal = coldre.GetChild(0); // Arma no coldre principal
+            Transform armaSecundaria = coldreSecundário.GetChild(0); // Arma no coldre secundário
+
+            // Troca as armas de coldre
+            armaPrincipal.SetParent(coldreSecundário);
+            armaSecundaria.SetParent(coldre);
+
+            // Ajusta as posições e rotações para ficarem centralizadas no novo coldre
+            armaPrincipal.localPosition = Vector3.zero;
+            armaPrincipal.localRotation = Quaternion.identity;
+
+            armaSecundaria.localPosition = Vector3.zero;
+            armaSecundaria.localRotation = Quaternion.identity;
+
+            // Ativa somente a arma no coldre principal e desativa a do secundário
+            armaPrincipal.gameObject.SetActive(false);
+            armaSecundaria.gameObject.SetActive(true);
+        }
+    }
+
 }

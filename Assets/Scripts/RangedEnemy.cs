@@ -1,103 +1,136 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class RangedEnemy : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer srEnemy;
     public Transform target;
     public float speed = 3f;
     public float rotateSpeed = 0.0025f;
     private Rigidbody2D rb;
     public GameObject bulletPrefab;
-
+    private Animator anim;
+    private bool isShot;
     public float distanceToShoot = 5f;
     public float distanceToStop = 3f;
 
     public float fireRate;
     private float timeToFire;
+    public Detection_controller detectionArea;
+    public SistemaArma sistema;
+    public MeleeAttack melee;
 
     public Transform firingPoint;
-    public int HP = 1;
-    
-    // Start is called before the first frame update
+    public float HP = 1;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
+        detectionArea = GetComponentInChildren<Detection_controller>(); // Pega o script no filho
+        anim = GetComponent<Animator>();
+        sistema = GetComponent<SistemaArma>();
+        melee = GetComponent<MeleeAttack>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(!target)
+        if (!target)
         {
             GetTarget();
-        } else
+        }
+        else
         {
             RotateTowardsTarget();
+            if (Vector2.Distance(target.position, transform.position) <= distanceToShoot)
+            {
+                Shoot();
+            }
+            else
+            {
+                isShot = false;
+                anim.SetBool("IsShot", isShot); 
+            }
         }
-
-        if(Vector2.Distance(target.position, transform.position) <= distanceToShoot)
-        {
-            Shoot();
-        }
-    }
-
-    private void Shoot()
-    {
-        if(timeToFire <= 0f)
-        {
-            Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
-            timeToFire = fireRate;
-        } else
-        {
-            timeToFire -= Time.deltaTime;
-        } 
-           
     }
 
     private void FixedUpdate()
     {
-        if (target != null)
+        if (target != null && detectionArea.detectedObjs.Contains(target.GetComponent<Collider2D>()))
         {
-            if ((Vector2.Distance(target.position, transform.position) >= distanceToStop))
+            if (Vector2.Distance(target.position, transform.position) >= distanceToStop)
             {
-                rb.velocity = transform.up * speed;
+                rb.velocity = (target.position - transform.position).normalized * speed;
             }
             else
             {
                 rb.velocity = Vector2.zero;
             }
         }
-    }
-
-    private void RotateTowardsTarget()
-    {
-        Vector2 targetDirection = target.position - transform.position;
-        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
-        Quaternion q = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, q, rotateSpeed);
+        else
+        {
+            rb.velocity = Vector2.zero;
+            target = null; // Reseta o alvo se ele sair da área de detecção
+        }
     }
 
     private void GetTarget()
     {
-        
-         target = GameObject.FindGameObjectWithTag("Player").transform;
-        
+        if (detectionArea != null && detectionArea.detectedObjs.Count > 0)
+        {
+            foreach (var col in detectionArea.detectedObjs)
+            {
+                if (col.CompareTag("Player"))
+                {
+                    target = col.transform; // Agora estamos acessando o transform do Collider2D corretamente
+                    return;
+                }
+            }
+        }
+
+        // Se não encontrou um alvo válido, zera o target e para o inimigo
+        target = null;
+        rb.velocity = Vector2.zero;
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+
+
+    private void RotateTowardsTarget()
     {
-        if (other.gameObject.CompareTag("Bullet"))
+        if (target == null) return;
+        Vector2 targetDirection = target.position - transform.position;
+        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 180f;
+        srEnemy.flipX = !(angle >= 100 || angle < 0);
+        Quaternion q = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, q, rotateSpeed);
+    }
+
+    private void Shoot()
+    {
+        if (timeToFire <= 0f)
         {
-            HP -= 1;
-            if (HP <= 0)
-            {
-                Die();
-            }
+            Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
+            timeToFire = fireRate;
+            isShot = true;
+            anim.SetBool("IsShot", isShot);
+
+        }
+        else
+        {
+            timeToFire -= Time.deltaTime;
+
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        HP -= damage;
+        if(HP <= 0)
+            Die();
+    }
     void Die()
     {
         Destroy(gameObject);

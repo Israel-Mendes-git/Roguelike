@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
+    [SerializeField] public Slider slider;
+    [SerializeField] public Slider sliderEnergy;
     private Player_Controller player;
+    [SerializeField] private Text hpTxt; // Mantém apenas uma variável para o texto do HP
+    [SerializeField] private Text energyTxt;
 
     private void Start()
     {
@@ -23,9 +27,18 @@ public class HealthBarUI : MonoBehaviour
             return;
         }
 
+        if (hpTxt == null)
+        {
+            Debug.LogError("O TMP_Text hpTxt não foi atribuído ao HealthBarUI!");
+            return;
+        }
+
         // Definir o valor máximo e o valor inicial como 10
         slider.maxValue = 10;
         slider.value = 10; // Agora o Slider começa com 10
+        sliderEnergy.maxValue = 200;
+        sliderEnergy.value = 200;
+        UpdateHealthUI(); // Atualiza a UI inicialmente
     }
 
     private void Update()
@@ -33,6 +46,22 @@ public class HealthBarUI : MonoBehaviour
         if (player != null && slider != null)
         {
             slider.value = player.HP; // Atualiza o Slider com o HP do jogador
+            sliderEnergy.value = player.Energy;
+            UpdateHealthUI(); // Atualiza o texto do HP
+            
+        }
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (hpTxt != null && energyTxt != null)
+        {
+            hpTxt.text = $"{player.HP} / {slider.maxValue}"; // Atualiza o texto do HP
+            energyTxt.text = $"{player.Energy} / {sliderEnergy.maxValue}";
+        }
+        else
+        {
+            Debug.Log("hpTxt é nulo");
         }
     }
 }

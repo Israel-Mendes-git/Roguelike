@@ -17,10 +17,6 @@ public class Detection_controller : MonoBehaviour
             detectedObjs.Add(collision);
             Debug.Log($"Trigger Enter: {collision.name}");
         }
-        else
-        {
-            Debug.Log($"Trigger Enter (não alvo): {collision.name}");
-        }
     }
 
     //caso saia da área de colisão
@@ -33,9 +29,6 @@ public class Detection_controller : MonoBehaviour
             detectedObjs.Remove(collision);
             Debug.Log($"Trigger Exit: {collision.name}");
         }
-        else
-        {
-            Debug.Log($"Trigger Exit (não alvo): {collision.name}");
-        }
+
     }
 }

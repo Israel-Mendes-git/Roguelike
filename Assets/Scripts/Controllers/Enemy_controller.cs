@@ -10,12 +10,14 @@ public class Enemy_controller : MonoBehaviour
     public Transform target;
     Vector2 moveDirection;
     public Detection_controller detectionArea;
+    public SistemaArma sistema;
+    public MeleeAttack melee;
 
 
     [SerializeField] GameObject Coin;
 
     [SerializeField]
-    int HP;
+    public float HP;
 
     [SerializeField]
     public float damage;
@@ -24,6 +26,8 @@ public class Enemy_controller : MonoBehaviour
     {
         //atribui um componente de física a uma variável 
         rig = GetComponent<Rigidbody2D>();
+        sistema = GetComponent<SistemaArma>();
+        melee = GetComponent<MeleeAttack>();
     }
 
     void Start()
@@ -54,19 +58,15 @@ public class Enemy_controller : MonoBehaviour
         }
 
     }
-    private void OnCollisionEnter2D(Collision2D other)
+
+    public void TakeDamage(float damage)
     {
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            HP -= 1;
-            if (HP <= 0)
-            {
-                Die();
-            }
-        }
+        HP -= damage;
+        if (HP <= 0)
+            Die();
     }
 
-    void Die()
+    public void Die()
     {
         Destroy(gameObject);
         Instantiate(Coin, transform.position, Quaternion.identity);

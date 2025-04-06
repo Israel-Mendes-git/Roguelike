@@ -9,6 +9,13 @@ TagManager:
   - "GunPadr\xE3o"
   - Smg
   - EnemyBullet
+  - Texto
+  - Box
+  - Pato
+  - PistolaLazer
+  - CamTrigger
+  - Espada
+  - RangedEnemy
   layers:
   - Default
   - TransparentFX

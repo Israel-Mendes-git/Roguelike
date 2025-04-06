@@ -4,89 +4,59 @@ using UnityEngine;
 
 public class ItemPickUp : MonoBehaviour
 {
-    private Transform coldre;
-    private Transform pistola;
-    private Transform coldreSmg;
-    private Transform Smg;
-    public bool isEquip;
-    public string WeaponActive;
-
+    private Player_Controller player;
+    private SistemaArma sistemaArma;
 
     void Start()
     {
-        
-        coldre = GameObject.Find("ColdrePistola").transform;
-        pistola = GameObject.Find("PistolaPadrão").transform;
-        coldreSmg = GameObject.Find("ColdreSmg").transform;
-        Smg = GameObject.Find("Smg").transform;
-
+        player = FindObjectOfType<Player_Controller>();
+        sistemaArma = FindObjectOfType<SistemaArma>();
+        sistemaArma.podeAtirar = false;
     }
 
-    private void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Se o jogador pressionar "G", dropa o item
-        if (isEquip && Input.GetKeyDown(KeyCode.Q))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            DropItem();
+            if (player.coldre.childCount == 0) // Se não houver arma no coldre principal, coloca lá
+            {
+                this.gameObject.transform.SetParent(player.coldre);
+            }
+            else if (player.coldreSecundário.childCount == 0) // Se o coldre principal já tiver uma arma, coloca no secundário
+            {
+                Transform armaAntiga = player.coldre.GetChild(0); // Pega a arma do coldre principal
+
+                // Move a arma principal para o coldre secundário
+                armaAntiga.SetParent(player.coldreSecundário);
+                armaAntiga.localPosition = Vector3.zero;
+                armaAntiga.localRotation = Quaternion.identity;
+
+                // Coloca a nova arma no coldre principal
+                this.gameObject.transform.SetParent(player.coldre);
+            }
+            else // Se os dois coldres já estiverem ocupados, dropar a arma secundária
+            {
+                Transform armaAntigaSecundaria = player.coldreSecundário.GetChild(0); // Pega a arma secundária antiga
+
+                // Remove a arma secundária e joga no mundo
+                armaAntigaSecundaria.SetParent(null);
+                armaAntigaSecundaria.position = player.transform.position + new Vector3(2, 0, 0);
+                armaAntigaSecundaria.gameObject.SetActive(true); // Ativa a arma dropada
+
+                // Move a arma do coldre para o coldre secundário
+                Transform armaAntiga = player.coldre.GetChild(0);
+                armaAntiga.SetParent(player.coldreSecundário);
+                armaAntiga.localPosition = Vector3.zero;
+                armaAntiga.localRotation = Quaternion.identity;
+
+                // Coloca a nova arma no coldre principal
+                this.gameObject.transform.SetParent(player.coldre);
+            }
+
+
+            // Ajusta posição e rotação para ficar centralizado no coldre
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            PickUpItem();
-        }
-    }
-
-    void PickUpItem()
-    {
-        isEquip = true;
-        if (coldre.name == "ColdrePistola")
-        {
-            transform.SetParent(coldre);
-            WeaponActive = pistola.name;
-            
-        }
-        if(coldreSmg.name == "ColdreSmg")
-        {
-            transform.SetParent(coldreSmg);
-            WeaponActive = Smg.name;
-        }
-        
-        transform.localPosition = new Vector2(0f, 0f);
-        transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
-
-        pistola.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        Smg.rotation = new Quaternion(0f, 0f, 0f, 0f);
-
-        WeaponActivated();
-
-    }
-
-    void DropItem()
-    {
-        isEquip = false;
-        transform.SetParent(null); // Remove o item do jogador
-
-        // Move o item um pouco para frente do jogador
-        Vector3 dropPosition = transform.position + new Vector3(1.5f, 0f, 0f);
-        transform.position = dropPosition;
-    }
-
-    void WeaponActivated()
-    {
-        switch (WeaponActive)
-        {
-            case "PistolaPadrão":
-                Debug.Log("Pistola é a arma padrão");
-
-                break;
-            case "Smg":
-                Debug.Log("Smg é a arma padrão");
-                break;
-
-        }
-
     }
 }
