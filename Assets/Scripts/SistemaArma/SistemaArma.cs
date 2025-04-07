@@ -16,6 +16,7 @@ public class SistemaArma : MonoBehaviour
     [SerializeField] Transform pontoDeFogo;
     [SerializeField] GameObject tiro;
     [SerializeField] public float damage;
+    [SerializeField] private int energy;
     private Enemy_controller enemy;
     private RangedEnemy ranged;
 
@@ -39,6 +40,7 @@ public class SistemaArma : MonoBehaviour
             podeAtirar = false;
             Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
             Invoke("CDTiro", tempoEntreTiros);
+            controller.Energy -= energy;
         }
     }
 
@@ -55,17 +57,7 @@ public class SistemaArma : MonoBehaviour
         srGun.flipX = !(angle >= 100 || angle < 0);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("RangedEnemy"))
-        {
-            ranged.TakeDamage(damage);
-        }
-        if (collision.gameObject.CompareTag("Enemy"))
-            enemy.TakeDamage(damage);
-    }
-
-    void CDTiro()
+    public void CDTiro()
     {
         podeAtirar = true;
     }

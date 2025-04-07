@@ -21,8 +21,10 @@ public class RangedEnemy : MonoBehaviour
     public float fireRate;
     private float timeToFire;
     public Detection_controller detectionArea;
+    public Player_Controller playerController;
     public SistemaArma sistema;
     public MeleeAttack melee;
+    [SerializeField] GameObject Coin;
 
     public Transform firingPoint;
     public float HP = 1;
@@ -34,6 +36,8 @@ public class RangedEnemy : MonoBehaviour
         anim = GetComponent<Animator>();
         sistema = GetComponent<SistemaArma>();
         melee = GetComponent<MeleeAttack>();
+        playerController = FindObjectOfType<Player_Controller>();
+
     }
 
     void Update()
@@ -124,15 +128,38 @@ public class RangedEnemy : MonoBehaviour
 
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet") || collision.gameObject.CompareTag("Espada"))
+        {
+            if (playerController != null && playerController.coldre != null)
+            {
+                SistemaArma arma = playerController.coldre.GetComponentInChildren<SistemaArma>();
+                MeleeAttack sword = playerController.coldre.GetComponentInChildren<MeleeAttack>();
+
+                if (collision.gameObject.CompareTag("Bullet"))
+                {
+                    TakeDamage(arma.damage);
+                }
+                else if (collision.gameObject.CompareTag("Espada"))
+                {
+                    TakeDamage(sword.damage);
+                }
+            }
+        }
+    }
+
 
     public void TakeDamage(float damage)
     {
         HP -= damage;
-        if(HP <= 0)
+        Debug.Log("HP do inimigo: " + HP);
+        if (HP <= 0)
             Die();
     }
     void Die()
     {
         Destroy(gameObject);
+        Instantiate(Coin, transform.position, Quaternion.identity);
     }
 }

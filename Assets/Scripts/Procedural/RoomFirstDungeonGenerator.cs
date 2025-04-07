@@ -24,6 +24,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
     public CorridorFirstDungeonGenerator corridorFirst;
     private List<GameObject> itensInstanciados = new List<GameObject>();
+    [SerializeField] private GameObject lojinha;
     public Vector2Int playerSpawnPosition;
 
     protected override void RunProceduralGeneration()
@@ -105,6 +106,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
             GameObject newItem = Instantiate(itensParaSpawn[Random.Range(0, itensParaSpawn.Length)], spawnWorldPosition, Quaternion.identity);
             itensInstanciados.Add(newItem);
         }
+
     }
 
     private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)

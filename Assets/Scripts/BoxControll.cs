@@ -11,7 +11,7 @@ public class BoxControll : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet") || (collision.gameObject.CompareTag("Espada")))
         {
             DropItem(100);
             DestroyBox();

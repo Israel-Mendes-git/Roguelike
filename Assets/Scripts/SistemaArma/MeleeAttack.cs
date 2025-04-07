@@ -1,82 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class MeleeAttack : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-
     [SerializeField] private float meleeSpeed;
-
     [SerializeField] public float damage;
     [SerializeField] public SpriteRenderer srWeapon;
 
     private Player_Controller controller;
-    private Enemy_controller enemy;
-    private RangedEnemy ranged;
-    private BoxCollider2D boxCollider;
 
-    float timeUntilMelee;
 
-    private void Start()
-    {
-        controller = FindObjectOfType<Player_Controller>();
-        enemy = FindObjectOfType<Enemy_controller>();
-        ranged = FindObjectOfType<RangedEnemy>(); 
-        boxCollider = GetComponent<BoxCollider2D>();
+    private float timeUntilMelee;
 
-    }
     private void Update()
     {
+       
+        // Desativa a hitbox quando a arma não está atacando
         if (controller == null || transform.parent != controller.coldre)
-            return;
-        if (transform.parent == controller.coldre)
-        {
-            boxCollider.enabled = false;
-        }
+                return;
+
         UpdatePosition();
+
         if (timeUntilMelee <= 0f)
         {
-            if (Input.GetMouseButtonDown(0) && (controller.mov.x > 0 || controller.StopWalkDir))
+            if (Input.GetMouseButtonDown(0))
             {
-                anim.SetTrigger("Attack");
-                anim.ResetTrigger("AttackEsq");
+                Attack();
                 timeUntilMelee = meleeSpeed;
-                boxCollider.enabled = true;
-                
+                hitbox.enabled = true;
             }
-            else if (Input.GetMouseButtonDown(0) && (controller.mov.x < 0 || controller.StopWalkEsq))
-            {
-                anim.SetTrigger("AttackEsq");
-                anim.ResetTrigger("Attack");
-                timeUntilMelee = meleeSpeed;
-                boxCollider.enabled = true;
-            }
-
-           
         }
         else
         {
             timeUntilMelee -= Time.deltaTime;
         }
-
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private Collider2D hitbox; // Adicione isso como variável
+
+    private void Start()
     {
-        if (collision.gameObject.CompareTag("RangedEnemy"))
+        controller = FindObjectOfType<Player_Controller>();
+        hitbox = GetComponent<Collider2D>();
+        
+    }
+
+    private void Attack()
+    {
+        if (controller.mov.x > 0 || controller.StopWalkDir)
         {
-            ranged.TakeDamage(damage);
+            anim.SetTrigger("Attack");
+            anim.ResetTrigger("AttackEsq");
         }
-        if (collision.gameObject.CompareTag("Enemy"))
-            enemy.TakeDamage(damage);
+        else if (controller.mov.x < 0 || controller.StopWalkEsq)
+        {
+            anim.SetTrigger("AttackEsq");
+            anim.ResetTrigger("Attack");
+        }
+
+        StartCoroutine(EnableHitbox());
     }
 
-    void EnemyDie()
+    IEnumerator EnableHitbox()
     {
-        Destroy(gameObject);
+        if (hitbox)
+        {
+            hitbox.enabled = true;
+            yield return new WaitForSeconds(0.2f); // Ativa a hitbox por 0.2 segundos
+            hitbox.enabled = false;
+        }
     }
+
 
     void UpdatePosition()
     {
@@ -84,13 +80,13 @@ public class MeleeAttack : MonoBehaviour
         {
             srWeapon.flipX = true;
         }
-        else if(controller.mov.x > 0)
+        else if (controller.mov.x > 0)
         {
             srWeapon.flipX = false;
         }
         else
         {
-            if (controller. WalkDir) // Se estava indo para a direita
+            if (controller.WalkDir) // Se estava indo para a direita
             {
                 srWeapon.flipX = false;
             }

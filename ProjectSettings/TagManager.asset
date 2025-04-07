@@ -16,6 +16,8 @@ TagManager:
   - CamTrigger
   - Espada
   - RangedEnemy
+  - Arma
+  - Potions
   layers:
   - Default
   - TransparentFX
