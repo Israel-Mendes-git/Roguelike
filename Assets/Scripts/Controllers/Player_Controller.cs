@@ -24,7 +24,9 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] Rigidbody2D rb;
     [SerializeField] public float HP;
-    public int Energy;
+    public float HPMax;
+    [SerializeField] public int Energy;
+    public int MaxEnergy;
     [SerializeField] public Enemy_controller enemy;
     [SerializeField] float cooldownDash;
 
@@ -44,6 +46,7 @@ public class Player_Controller : MonoBehaviour
         }
         Vector2Int spawnPos = FindObjectOfType<RoomFirstDungeonGenerator>().playerSpawnPosition;
         transform.position = new Vector3(spawnPos.x + 0.5f, spawnPos.y + 0.5f, 0);
+        MaxEnergy = Energy;
 
     }
 

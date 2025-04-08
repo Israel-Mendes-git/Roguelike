@@ -133,7 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinRequery: 10
   itemsToSell:
-  - {fileID: 0}
+  - {fileID: 5556516025477166922, guid: f69891ccf9c050d40bfd3923bbde9d40, type: 3}
   localItem: {fileID: 6162999018135854789}
 --- !u!70 &4606264751854299827
 CapsuleCollider2D:
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinRequery: 15
   itemsToSell:
-  - {fileID: 0}
+  - {fileID: 4435599144961439975, guid: 36632ef155af5e845a4e80c9ddf9d1d5, type: 3}
   localItem: {fileID: 4751810858839017298}
 --- !u!70 &2027928538281833588
 CapsuleCollider2D:
@@ -575,13 +575,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinRequery: 40
   itemsToSell:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 761918571019705684, guid: 3560311560463614a8d3be4714edf72a, type: 3}
+  - {fileID: 2444629419257686682, guid: 6b03691230b238b4ea14c49acf2d8e67, type: 3}
+  - {fileID: 5628629495069657316, guid: cadcc05b31562254d927a0b7d8da319d, type: 3}
+  - {fileID: 1171074270618375836, guid: bd0b6131e59df7d4894aa13c8ee088b9, type: 3}
+  - {fileID: 6153615559928744545, guid: 8988e3c7e7970e64e83038cfa294e4ce, type: 3}
   - {fileID: 3051579430647514970, guid: 8fb2d48a1d532c44fb1224f0a36caebc, type: 3}
+  - {fileID: 6384766423805993614, guid: a0d6d986ef507c3478442a1c63e220c5, type: 3}
+  - {fileID: 3041869795848302019, guid: 3d21d4b6db6942a449a338bce5a37328, type: 3}
   localItem: {fileID: 3456690611339756446}
 --- !u!70 &13756165695911676
 CapsuleCollider2D:
@@ -632,7 +633,7 @@ GameObject:
   - component: {fileID: 876433178833966725}
   m_Layer: 0
   m_Name: erick  frente(1)
-  m_TagString: Untagged
+  m_TagString: Shop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

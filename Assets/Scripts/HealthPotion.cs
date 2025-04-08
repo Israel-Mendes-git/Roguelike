@@ -6,6 +6,7 @@ public class HealthPotion : MonoBehaviour
 {
     private Player_Controller player;
     private HealthBarUI healthPotion;
+    [SerializeField] private int Heal;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -17,10 +18,10 @@ public class HealthPotion : MonoBehaviour
             if (player != null)
             {
                 
-                player.HP += 4;
-                if (player.HP > 10)
+                player.HP += Heal;
+                if (player.HP > player.HPMax)
                 {
-                    player.HP = 10;
+                    player.HP = player.HPMax;
                     healthPotion.slider.value = player.HP;
                 }
             }

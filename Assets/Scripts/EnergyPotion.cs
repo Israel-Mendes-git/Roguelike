@@ -6,6 +6,7 @@ public class EnergyPotion : MonoBehaviour
 {
     private Player_Controller player;
     private HealthBarUI healthPotion;
+    [SerializeField] private int EnergyRestore;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -17,10 +18,10 @@ public class EnergyPotion : MonoBehaviour
             if (player != null)
             {
 
-                player.Energy += 30;
-                if(player.Energy > 200)
+                player.Energy += EnergyRestore;
+                if(player.Energy > player.MaxEnergy)
                 {
-                    player.Energy = 200;
+                    player.Energy = player.MaxEnergy;
                     healthPotion.sliderEnergy.value = player.Energy;
                 }
 

@@ -18,6 +18,8 @@ TagManager:
   - RangedEnemy
   - Arma
   - Potions
+  - Shop
+  - Portal
   layers:
   - Default
   - TransparentFX

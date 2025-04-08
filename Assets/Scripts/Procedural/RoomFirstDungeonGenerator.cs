@@ -21,11 +21,14 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
     [SerializeField]
     private int quantidadeItens = 5;
 
-
     public CorridorFirstDungeonGenerator corridorFirst;
     private List<GameObject> itensInstanciados = new List<GameObject>();
-    [SerializeField] private GameObject lojinha;
     public Vector2Int playerSpawnPosition;
+    public Vector2Int PistolinhaSpawnPosition;
+    public Vector2Int shopSpawnPosition;
+    public Vector2Int PortalSpawnPosition;
+
+    private List<BoundsInt> roomsList = new List<BoundsInt>();
 
     protected override void RunProceduralGeneration()
     {
@@ -41,17 +44,27 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
     {
         corridorFirst = GetComponent<CorridorFirstDungeonGenerator>();
         // Posiciona o jogador após gerar as salas
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
             player.transform.position = new Vector3(playerSpawnPosition.x + 0.5f, playerSpawnPosition.y + 0.5f, 0);
         }
+        GameObject pistolinha = GameObject.FindWithTag("GunPadrão");
+        pistolinha.transform.position = new Vector3(PistolinhaSpawnPosition.x + 1f, playerSpawnPosition.y + 1f, 0);
+
+        GameObject shop = GameObject.FindWithTag("Shop");
+        shop.transform.position = new Vector3(shopSpawnPosition.x + 2f, shopSpawnPosition.y + 2f, 0);
+
+        GameObject portal = GameObject.FindWithTag("Portal");
+        portal.transform.position = new Vector3(PortalSpawnPosition.x + 0.5f, PortalSpawnPosition.y + 0.5f, 0);
     }
 
 
-    private void CreateRooms()
+    public void CreateRooms()
     {
-        var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)startPosition,
+
+        roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)startPosition,
             new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight);
 
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
@@ -63,7 +76,25 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
             BoundsInt firstRoom = roomsList[0];
             playerSpawnPosition = (Vector2Int)Vector3Int.RoundToInt(firstRoom.center);
             roomCenters.Add(playerSpawnPosition);
+            PistolinhaSpawnPosition = (Vector2Int)Vector3Int.RoundToInt(firstRoom.center);
+            roomCenters.Add(PistolinhaSpawnPosition);
         }
+        if(roomsList.Count > 4)
+        {
+            BoundsInt shopRoom = roomsList[4];
+            shopSpawnPosition = (Vector2Int)Vector3Int.RoundToInt(shopRoom.center);
+            roomCenters.Add(shopSpawnPosition);
+
+        }
+        if (roomsList.Count > 0)
+        {
+            BoundsInt lastRoom = roomsList[^1]; // Obtém o último elemento da lista
+            PortalSpawnPosition = (Vector2Int)Vector3Int.RoundToInt(lastRoom.center);
+            roomCenters.Add(PortalSpawnPosition);
+                                         
+        }
+
+
 
         if (randomWalkRooms)
         {
@@ -185,5 +216,17 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         }
         return closest;
     }
+    public Vector2 GetStartPosition()
+    {
+        return (Vector2)startPosition;
+    }
+    public Vector2 GetLastRoomPosition()
+    {
+        if (roomsList.Count > 0)
+        {
+            return (Vector2)roomsList[^1].center;
+        }
+        return Vector2.zero;
+    }
+
 }
- 

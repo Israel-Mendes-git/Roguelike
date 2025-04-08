@@ -7,13 +7,17 @@ public class BoxControll : MonoBehaviour
 {
     [SerializeField] GameObject HealthPotion;
     [SerializeField] GameObject EnergyPotion;
+    [SerializeField] GameObject BigHealthPotion;
+    [SerializeField] GameObject BigEnergyPotion;
+    [SerializeField] GameObject SmallHealthPotion;
+    [SerializeField] GameObject SmallEnergyPotion;
     [SerializeField] Transform box;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Bullet") || (collision.gameObject.CompareTag("Espada")))
         {
-            DropItem(100);
+            DropItem(10);
             DestroyBox();
         }
     }
@@ -24,16 +28,35 @@ public class BoxControll : MonoBehaviour
     {
         if (Rand() <= yes)
         {
-            if (RandDrop() == 0)
+            switch (RandDrop())
             {
-                Instantiate(HealthPotion, transform.position, Quaternion.identity);
-                Debug.Log("Dropou uma poção de cura");
+                case 0:
+                    Instantiate(HealthPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de cura");
+                    break;
+                case 1:
+                    Instantiate(EnergyPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de energia");
+                    break;
+                case 2:
+                    Instantiate(BigHealthPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de cura grande");
+                    break;
+                case 3:
+                    Instantiate(BigEnergyPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de energia grande");
+                    break;
+                case 4: 
+                    Instantiate(SmallEnergyPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de energia pequena");
+                    break;
+                case 5:
+                    Instantiate(SmallHealthPotion, transform.position, Quaternion.identity);
+                    Debug.Log("Dropou uma poção de cura pequena");
+                    break;
             }
-            else if (RandDrop() == 1)
-            {
-                Instantiate(EnergyPotion, transform.position, Quaternion.identity);
-                Debug.Log("Dropou uma poção de energia");
-            }
+               
+          
         }
         else
         {
@@ -49,7 +72,7 @@ public class BoxControll : MonoBehaviour
     }
     int RandDrop()
     {
-        int rand = Random.Range(0, 2);
+        int rand = Random.Range(0, 6);
         return rand;
     }
     void DestroyBox()
