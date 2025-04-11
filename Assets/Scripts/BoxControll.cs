@@ -15,13 +15,18 @@ public class BoxControll : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet") || (collision.gameObject.CompareTag("Espada")))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             DropItem(10);
             DestroyBox();
         }
     }
 
+    public void SwordCollider()
+    {
+        DropItem(10);
+        DestroyBox();
+    }
 
 
     void DropItem(int yes)

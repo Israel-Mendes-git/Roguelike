@@ -159,7 +159,9 @@ public class RangedEnemy : MonoBehaviour
     }
     void Die()
     {
+        playerController.AddEnemyKill(true); // Para inimigos de longo alcance
         Destroy(gameObject);
         Instantiate(Coin, transform.position, Quaternion.identity);
+        
     }
 }

@@ -19,6 +19,7 @@ public class SistemaArma : MonoBehaviour
     [SerializeField] private int energy;
     private Enemy_controller enemy;
     private RangedEnemy ranged;
+    [SerializeField] public SpriteRenderer srWeapon;
 
     private void Start()
     {
@@ -32,9 +33,10 @@ public class SistemaArma : MonoBehaviour
         // Se a arma não estiver no coldre principal, não faz nada
         if (controller == null || transform.parent != controller.coldre)
             return;
-
+        
         mousePosi = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        if (controller.Energy <= 0) return;
         if (Input.GetMouseButton(0) && podeAtirar)
         {
             podeAtirar = false;
@@ -54,11 +56,11 @@ public class SistemaArma : MonoBehaviour
         angle = Mathf.Atan2(dirArma.y, dirArma.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        srGun.flipX = !(angle >= 100 || angle < 0);
     }
 
     public void CDTiro()
     {
         podeAtirar = true;
     }
+   
 }

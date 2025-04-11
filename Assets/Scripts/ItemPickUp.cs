@@ -59,6 +59,11 @@ public class ItemPickUp : MonoBehaviour
             armaParaDropar.SetParent(null); // Remove do coldre
             armaParaDropar.position = player.transform.position + new Vector3(2, 0, 0); // Posiciona no mundo
             armaParaDropar.gameObject.SetActive(true); // Ativa no mundo
+            if(armaParaDropar.CompareTag("Espada"))
+            {
+                BoxCollider2D collider = armaParaDropar.GetComponent<BoxCollider2D>();
+                collider.enabled = true;
+            }
 
             if (player.coldreSecundário.childCount > 0) // Se houver arma no coldre secundário
             {

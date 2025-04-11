@@ -10,6 +10,8 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField] public SpriteRenderer srWeapon;
 
     private Player_Controller controller;
+    [SerializeField] private float animationTime;
+    
 
 
     private float timeUntilMelee;
@@ -68,8 +70,46 @@ public class MeleeAttack : MonoBehaviour
         if (hitbox)
         {
             hitbox.enabled = true;
-            yield return new WaitForSeconds(0.2f); // Ativa a hitbox por 0.2 segundos
+            Debug.Log("Hitbox ativada!");
+            yield return new WaitForSeconds(animationTime);
             hitbox.enabled = false;
+            Debug.Log("Hitbox desativada!");
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            MeleeAttack sword = controller.coldre.GetComponentInChildren<MeleeAttack>();
+            if (sword != null)
+            {
+                Debug.Log("Espada detectada. Dano: " + sword.damage);
+                collision.gameObject.GetComponent<Enemy_controller>().TakeDamage(sword.damage);
+            }
+            else
+            {
+                Debug.Log("Erro: Espada não encontrada no coldre!");
+            }
+        }
+        if (collision.gameObject.CompareTag("RangedEnemy"))
+        {
+            MeleeAttack sword = controller.coldre.GetComponentInChildren<MeleeAttack>();
+            if (sword != null)
+            {
+                Debug.Log("Espada detectada. Dano: " + sword.damage);
+                collision.gameObject.GetComponent<RangedEnemy>().TakeDamage(sword.damage);
+            }
+            else
+            {
+                Debug.Log("Erro: Espada não encontrada no coldre!");
+            }
+        }
+        if(collision.gameObject.CompareTag("Box"))
+        {
+
+            collision.gameObject.GetComponent<BoxControll>().SwordCollider();
+            
         }
     }
 

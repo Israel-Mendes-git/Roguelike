@@ -20,7 +20,7 @@ public class Tiro : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Enemy") || (other.gameObject.CompareTag("Box")) || (other.gameObject.CompareTag("RangedEnemy")))
+        if (other.gameObject.CompareTag("Enemy") || (other.gameObject.CompareTag("Box")) || (other.gameObject.CompareTag("RangedEnemy")) || (other.gameObject.CompareTag("Walls")))
         {
             Destroy(gameObject);
         }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class Player_Controller : MonoBehaviour
     public bool StopWalkDir;
     public bool StopWalkEsq;
 
+    private bool isPaused;
 
     public ItemPickUp itemPickUp;
     public Transform coldre;
@@ -23,8 +26,8 @@ public class Player_Controller : MonoBehaviour
     public int Coin;
 
     [SerializeField] Rigidbody2D rb;
-    [SerializeField] public float HP;
-    public float HPMax;
+    [SerializeField] public int HP;
+    public int HPMax;
     [SerializeField] public int Energy;
     public int MaxEnergy;
     [SerializeField] public Enemy_controller enemy;
@@ -34,8 +37,28 @@ public class Player_Controller : MonoBehaviour
     bool isDash;
     public Vector2 mov;
 
+    [Header("Paineis e Menus")]
+    public GameObject pausePanel;
+    public string cena;
+    public GameObject deadPanel;
+    public string playAgain;
+
+
+    public int EnemyPoints { get; private set; }
+    public int RangedEnemyPoints { get; private set; }
+
+    public void AddEnemyKill(bool isRanged)
+    {
+        if (isRanged)
+            RangedEnemyPoints++;
+        else
+            EnemyPoints++;
+    }
+
+
     private void Start()
     {
+        Time.timeScale = 1f;
         speedAtual = speed;
         anim = GetComponent<Animator>();
 
@@ -48,11 +71,60 @@ public class Player_Controller : MonoBehaviour
         transform.position = new Vector3(spawnPos.x + 0.5f, spawnPos.y + 0.5f, 0);
         MaxEnergy = Energy;
 
+
     }
 
 
     // Update is called once per frame
     void Update()
+    {
+        if (!isPaused && !isDead)
+        {
+            Mov();
+            Dash();
+            SwitchWeapon();
+            UpdateAnimator();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseScreen();
+        }
+        DeadScreen();
+    }
+
+    void PauseScreen()
+    {
+        if(isPaused)
+        {
+            isPaused = false;
+            Time.timeScale = 1f;
+            pausePanel.SetActive(false);
+        }
+        else
+        {
+            isPaused = true;
+            Time.timeScale = 0f;
+            pausePanel.SetActive(true);
+            
+        }
+    }
+
+    void DeadScreen()
+    {
+        if(isDead)
+        {
+            deadPanel.SetActive(true);
+            Time.timeScale = 0f;
+            DeadManager deadManager = FindObjectOfType<DeadManager>();
+            if (deadManager != null)
+            {
+                deadManager.ShowScore(EnemyPoints, RangedEnemyPoints);
+            }
+        }
+    }
+
+    void Mov()
     {
         if (speedAtual == speed)
         {
@@ -62,21 +134,44 @@ public class Player_Controller : MonoBehaviour
 
         mov.Normalize();
 
+    }
+
+    void Dash()
+    {
         if (Input.GetKeyDown(KeyCode.LeftShift) && mov != Vector2.zero && isDash == false)
         {
             isDash = true;
             speedAtual = DashSpeed;
             Invoke("PosDash", 0.1f);
         }
+    }
 
+    void SwitchWeapon()
+    {
         if (Input.GetKeyDown(KeyCode.R))
         {
             TrocarArma();
         }
-
-        UpdateAnimator();
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(cena);
+    }
+
+    public void Restart()
+    {
+        
+        SceneManager.LoadScene(playAgain);
+    }
+
+    public void BackToGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
+
+    }
 
     private void FixedUpdate()
     {
@@ -102,6 +197,7 @@ public class Player_Controller : MonoBehaviour
             if (HP <= 0)
             {
                 StartCoroutine(Die());
+                
             }
         }
     }

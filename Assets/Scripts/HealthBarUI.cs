@@ -34,10 +34,10 @@ public class HealthBarUI : MonoBehaviour
         }
 
         // Definir o valor máximo e o valor inicial como 10
-        slider.maxValue = 10;
-        slider.value = 10; // Agora o Slider começa com 10
-        sliderEnergy.maxValue = 200;
-        sliderEnergy.value = 200;
+        slider.maxValue = player.HPMax;
+        slider.value = player.HP; // Agora o Slider começa com 10
+        sliderEnergy.maxValue = player.MaxEnergy;
+        sliderEnergy.value = player.Energy;
         UpdateHealthUI(); // Atualiza a UI inicialmente
     }
 
@@ -52,7 +52,7 @@ public class HealthBarUI : MonoBehaviour
         }
     }
 
-    private void UpdateHealthUI()
+    public void UpdateHealthUI()
     {
         if (hpTxt != null && energyTxt != null)
         {

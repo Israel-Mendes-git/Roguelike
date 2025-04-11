@@ -11,6 +11,11 @@ public class Enemy_controller : MonoBehaviour
     Vector2 moveDirection;
     public Detection_controller detectionArea;
     public Player_Controller playerController; // Pegamos o Player_Controller do Player
+    public bool WalkDir;
+    public bool WalkEsq;
+    public bool StopWalkDir;
+    public bool StopWalkEsq;
+    private Animator anim;
 
     [SerializeField] GameObject Coin;
 
@@ -22,6 +27,7 @@ public class Enemy_controller : MonoBehaviour
     {
         // Atribui um componente de física à variável
         rig = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         // Encontra o Player_Controller globalmente
         playerController = FindObjectOfType<Player_Controller>();
@@ -40,6 +46,7 @@ public class Enemy_controller : MonoBehaviour
             // Armazena a direção horizontal e vertical do movimento em um vetor 2D
             moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
+        UpdateAnimator();
     }
 
     private void FixedUpdate()
@@ -56,24 +63,32 @@ public class Enemy_controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet") || collision.gameObject.CompareTag("Espada"))
+        Debug.Log("Colisão detectada com: " + collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Bullet"))
         {
+            Debug.Log("Objeto detectado é uma bala ou espada");
+
             if (playerController != null && playerController.coldre != null)
             {
-                SistemaArma arma = playerController.coldre.GetComponentInChildren<SistemaArma>();
-                MeleeAttack sword = playerController.coldre.GetComponentInChildren<MeleeAttack>();
-
+                
                 if (collision.gameObject.CompareTag("Bullet"))
                 {
-                    TakeDamage(arma.damage);
-                }
-                else if (collision.gameObject.CompareTag("Espada"))
-                {
-                    TakeDamage(sword.damage);
+                    SistemaArma arma = playerController.coldre.GetComponentInChildren<SistemaArma>();
+                    if (arma != null)
+                    {
+                        Debug.Log("Bala detectada. Dano: " + arma.damage);
+                        TakeDamage(arma.damage);
+                    }
+                    else
+                    {
+                        Debug.Log("Erro: Arma não encontrada no coldre!");
+                    }
                 }
             }
         }
     }
+
 
     public void TakeDamage(float damage)
     {
@@ -85,7 +100,57 @@ public class Enemy_controller : MonoBehaviour
 
     public void Die()
     {
+        playerController.AddEnemyKill(false); // Para inimigos comuns
         Destroy(gameObject);
         Instantiate(Coin, transform.position, Quaternion.identity);
+        
+    }
+    void UpdateAnimator()
+    {
+        if (moveDirection.x > 0) // Movendo para a direita
+        {
+            WalkDir = true;
+            WalkEsq = false;
+            StopWalkDir = false;
+            StopWalkEsq = false;
+
+            anim.SetBool("WalkDir", true);
+            anim.SetBool("WalkEsq", false);
+            anim.SetBool("StopWalkDir", false);
+            anim.SetBool("StopWalkEsq", false);
+        }
+        else if (moveDirection.x < 0) // Movendo para a esquerda
+        {
+            WalkEsq = true;
+            WalkDir = false;
+            StopWalkDir = false;
+            StopWalkEsq = false;
+
+            anim.SetBool("WalkEsq", true);
+            anim.SetBool("WalkDir", false);
+            anim.SetBool("StopWalkDir", false);
+            anim.SetBool("StopWalkEsq", false);
+        }
+        else // Jogador parou
+        {
+            if (WalkDir) // Se estava indo para a direita
+            {
+                StopWalkDir = true;
+                StopWalkEsq = false;
+            }
+            else if (WalkEsq) // Se estava indo para a esquerda
+            {
+                StopWalkEsq = true;
+                StopWalkDir = false;
+            }
+
+            WalkDir = false;
+            WalkEsq = false;
+
+            anim.SetBool("WalkDir", false);
+            anim.SetBool("WalkEsq", false);
+            anim.SetBool("StopWalkDir", StopWalkDir);
+            anim.SetBool("StopWalkEsq", StopWalkEsq);
+        }
     }
 }
