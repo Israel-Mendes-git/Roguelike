@@ -53,28 +53,32 @@ public class ItemPickUp : MonoBehaviour
 
     void DropWeapon()
     {
-        if (player.coldre.childCount > 0) // Se houver arma no coldre principal
+        if (player.coldre.childCount > 0)
         {
-            Transform armaParaDropar = player.coldre.GetChild(0); // Pega a arma do coldre principal
-            armaParaDropar.SetParent(null); // Remove do coldre
-            armaParaDropar.position = player.transform.position + new Vector3(2, 0, 0); // Posiciona no mundo
-            armaParaDropar.gameObject.SetActive(true); // Ativa no mundo
-            if(armaParaDropar.CompareTag("Espada"))
+            // Dropa a arma principal
+            Transform armaPrincipal = player.coldre.GetChild(0);
+            armaPrincipal.SetParent(null);
+            armaPrincipal.position = player.transform.position + new Vector3(2, 0, 0);
+            armaPrincipal.gameObject.SetActive(true);
+
+            if (armaPrincipal.CompareTag("Espada"))
             {
-                BoxCollider2D collider = armaParaDropar.GetComponent<BoxCollider2D>();
-                collider.enabled = true;
+                BoxCollider2D collider = armaPrincipal.GetComponent<BoxCollider2D>();
+                if (collider != null)
+                    collider.enabled = true;
             }
 
-            if (player.coldreSecundário.childCount > 0) // Se houver arma no coldre secundário
+            // Se existir arma secundária, ela vira a nova principal
+            if (player.coldreSecundário.childCount > 0)
             {
                 Transform armaSecundaria = player.coldreSecundário.GetChild(0);
-                armaSecundaria.SetParent(player.coldre); // Move a secundária para o coldre principal
+                armaSecundaria.SetParent(null); // Remove do coldre secundário primeiro
+                armaSecundaria.SetParent(player.coldre); // Depois move para o principal
                 armaSecundaria.localPosition = Vector3.zero;
                 armaSecundaria.localRotation = Quaternion.identity;
-
-                // Remover a arma do coldre secundário
-                armaSecundaria.SetParent(null);
             }
         }
     }
+
+
 }

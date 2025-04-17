@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 
-public class RangedEnemy : MonoBehaviour
+public class BossController : MonoBehaviour
 {
     [SerializeField] SpriteRenderer srEnemy;
     public Transform target;
@@ -59,7 +56,7 @@ public class RangedEnemy : MonoBehaviour
             else
             {
                 isShot = false;
-                anim.SetBool("IsShot", isShot); 
+                anim.SetBool("IsShot", isShot);
             }
         }
     }
@@ -155,13 +152,27 @@ public class RangedEnemy : MonoBehaviour
     void BuffEnemy()
     {
         Debug.Log(portalManager.contador);
-        if (portalManager.contador % 3 == 0 && (portalManager.contador > 0))
+        if (portalManager.contador >= 3)
         {
             HP += 2;
             damage += 2;
             Debug.Log(damage);
         }
-        
+        if (portalManager.contador >= 6)
+        {
+            HP += 2;
+            damage += 2;
+        }
+        if (portalManager.contador >= 9)
+        {
+            HP += 2;
+            damage += 2;
+        }
+        if (portalManager.contador >= 15)
+        {
+            HP += 5;
+            damage += 5;
+        }
     }
 
     public void TakeDamage(float damage)
@@ -176,6 +187,6 @@ public class RangedEnemy : MonoBehaviour
         playerController.AddEnemyKill(true); // Para inimigos de longo alcance
         Destroy(gameObject);
         Instantiate(Coin, transform.position, Quaternion.identity);
-        
+
     }
 }

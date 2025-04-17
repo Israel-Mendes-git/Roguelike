@@ -6,6 +6,7 @@ public class PortalManager : MonoBehaviour
 {
     private RoomFirstDungeonGenerator roomGenerator;
     private GameObject player;
+    public int contador;
 
     private void Start()
     {
@@ -24,6 +25,8 @@ public class PortalManager : MonoBehaviour
 
     private void RegenerateDungeon()
     {
+        contador++;
+
         // Limpa a dungeon
         roomGenerator.ClearDungeon();
 
@@ -33,13 +36,48 @@ public class PortalManager : MonoBehaviour
         // Reposiciona o jogador na nova primeira sala gerada
         if (player != null)
         {
-            player.transform.position = new Vector3(roomGenerator.playerSpawnPosition.x + 0.5f,
-                                                    roomGenerator.playerSpawnPosition.y + 0.5f, 0);
+            player.transform.position = new Vector3(
+                roomGenerator.playerSpawnPosition.x + 0.5f,
+                roomGenerator.playerSpawnPosition.y + 0.5f,
+                0
+            );
         }
 
         // Move o portal para a última sala gerada
         Vector2 portalPosition = roomGenerator.GetLastRoomPosition();
-        transform.position = new Vector3(portalPosition.x + 0.5f, portalPosition.y + 0.5f, 0);
-    }
+        transform.position = new Vector3(
+            portalPosition.x + 0.5f,
+            portalPosition.y + 0.5f,
+            0
+        );
 
+        // Reposiciona a loja principal (opcional, se só há uma que é movimentada)
+        GameObject shop = GameObject.FindWithTag("Shop");
+        if (shop != null)
+        {
+            shop.transform.position = new Vector3(
+                roomGenerator.shopSpawnPosition.x + 2f,
+                roomGenerator.shopSpawnPosition.y + 2f,
+                0
+            );
+        }
+
+        // Resetar todas as lojas da cena
+        ShopSystem[] allShops = FindObjectsOfType<ShopSystem>();
+        foreach (ShopSystem shopSystem in allShops)
+        {
+            shopSystem.ResetShop();
+        }
+
+        // Spawna o boss a cada 5 leveis
+        if (contador % 5 == 0)
+        {
+            GameObject boss = GameObject.FindWithTag("Boss");
+            boss.transform.position = new Vector3(
+                roomGenerator.BossSpawnPosition.x + 0.5f,
+                roomGenerator.BossSpawnPosition.y + 0.5f,
+                0
+            );
+        }
+    }
 }

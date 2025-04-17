@@ -23,12 +23,16 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
     public CorridorFirstDungeonGenerator corridorFirst;
     private List<GameObject> itensInstanciados = new List<GameObject>();
+
+
     public Vector2Int playerSpawnPosition;
     public Vector2Int PistolinhaSpawnPosition;
     public Vector2Int shopSpawnPosition;
     public Vector2Int PortalSpawnPosition;
+    public Vector2Int BossSpawnPosition;
 
     private List<BoundsInt> roomsList = new List<BoundsInt>();
+
 
     protected override void RunProceduralGeneration()
     {
@@ -58,6 +62,9 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
         GameObject portal = GameObject.FindWithTag("Portal");
         portal.transform.position = new Vector3(PortalSpawnPosition.x + 0.5f, PortalSpawnPosition.y + 0.5f, 0);
+        
+           
+        
     }
 
 
@@ -94,6 +101,13 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
                                          
         }
 
+        if(roomsList.Count > 0)
+        {
+            BoundsInt antiLastRoom = roomsList[^2];
+            BossSpawnPosition = (Vector2Int)Vector3Int.RoundToInt(antiLastRoom.center);
+            roomCenters.Add(BossSpawnPosition);
+        }
+
 
 
         if (randomWalkRooms)
@@ -128,6 +142,16 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         List<Vector2Int> validPositions = new List<Vector2Int>(floorPositions);
         validPositions.RemoveAll(pos => corridors.Contains(pos) || pos == playerSpawnPosition);
 
+        // Remover todas as posições que estão dentro da sala inicial
+        if (roomsList.Count > 0)
+        {
+            BoundsInt firstRoom = roomsList[0];
+            validPositions.RemoveAll(pos =>
+                pos.x >= firstRoom.xMin && pos.x <= firstRoom.xMax &&
+                pos.y >= firstRoom.yMin && pos.y <= firstRoom.yMax
+            );
+        }
+
         for (int i = 0; i < quantidadeItens; i++)
         {
             if (validPositions.Count == 0) break;
@@ -137,8 +161,8 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
             GameObject newItem = Instantiate(itensParaSpawn[Random.Range(0, itensParaSpawn.Length)], spawnWorldPosition, Quaternion.identity);
             itensInstanciados.Add(newItem);
         }
-
     }
+
 
     private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)
     {
@@ -225,6 +249,14 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         if (roomsList.Count > 0)
         {
             return (Vector2)roomsList[^1].center;
+        }
+        return Vector2.zero;
+    }
+    public Vector2 GetAntiLastRoomPosition()
+    {
+        if (roomsList.Count > 0)
+        {
+            return (Vector2)roomsList[^2].center;
         }
         return Vector2.zero;
     }

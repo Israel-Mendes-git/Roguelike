@@ -26,22 +26,24 @@ public class Player_Controller : MonoBehaviour
     public int Coin;
 
     [SerializeField] Rigidbody2D rb;
-    [SerializeField] public int HP;
+    public int HP;
     public int HPMax;
     [SerializeField] public int Energy;
     public int MaxEnergy;
-    [SerializeField] public Enemy_controller enemy;
     [SerializeField] float cooldownDash;
 
     public bool isDead;
     bool isDash;
     public Vector2 mov;
 
+
+
     [Header("Paineis e Menus")]
     public GameObject pausePanel;
     public string cena;
     public GameObject deadPanel;
     public string playAgain;
+
 
 
     public int EnemyPoints { get; private set; }
@@ -70,7 +72,7 @@ public class Player_Controller : MonoBehaviour
         Vector2Int spawnPos = FindObjectOfType<RoomFirstDungeonGenerator>().playerSpawnPosition;
         transform.position = new Vector3(spawnPos.x + 0.5f, spawnPos.y + 0.5f, 0);
         MaxEnergy = Energy;
-
+        
 
     }
 
@@ -86,13 +88,14 @@ public class Player_Controller : MonoBehaviour
             UpdateAnimator();
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseScreen();
         }
         DeadScreen();
-    }
 
+        
+    }
     void PauseScreen()
     {
         if(isPaused)
@@ -191,17 +194,35 @@ public class Player_Controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("EnemyBullet"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            HP -= enemy.damage;
+            int dano = other.gameObject.GetComponent<Enemy_controller>().damage;
+            HP -= dano;
             if (HP <= 0)
             {
                 StartCoroutine(Die());
-                
             }
         }
-    }
+        {
+            if (other.gameObject.CompareTag("EnemyBullet"))
+            {
+                EnemyShoot bullet = other.gameObject.GetComponent<EnemyShoot>(); // Obtém o script da bala
 
+                if (bullet != null)
+                {
+                    HP -= bullet.damage; // Aplica o dano correto
+                    Debug.Log("Player tomou " + bullet.damage + " de dano! HP atual: " + HP);
+                }
+                else
+                {
+                    Debug.LogError("A bala não tem o script EnemyShoot!");
+                }
+
+                Destroy(other.gameObject); // Destroi a bala após o impacto
+            }
+        }
+        
+    }
     private IEnumerator Die()
     {
         isDead = true;

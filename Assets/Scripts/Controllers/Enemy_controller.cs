@@ -16,6 +16,7 @@ public class Enemy_controller : MonoBehaviour
     public bool StopWalkDir;
     public bool StopWalkEsq;
     private Animator anim;
+    private PortalManager portalManager;
 
     [SerializeField] GameObject Coin;
 
@@ -37,6 +38,8 @@ public class Enemy_controller : MonoBehaviour
     {
         // A variável target recebe o valor do GameObject com a tag "Player"
         target = GameObject.FindGameObjectWithTag("Player")?.transform;
+        portalManager = GameObject.FindObjectOfType<PortalManager>();
+        BuffEnemy();
     }
 
     void Update()
@@ -47,6 +50,7 @@ public class Enemy_controller : MonoBehaviour
             moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
         UpdateAnimator();
+        
     }
 
     private void FixedUpdate()
@@ -87,6 +91,18 @@ public class Enemy_controller : MonoBehaviour
                 }
             }
         }
+    }
+
+    void BuffEnemy()
+    {
+        Debug.Log(portalManager.contador);
+        if(portalManager.contador % 3 == 0 && (portalManager.contador > 0))
+        {
+            HP += 5;
+            damage += 1;
+            Debug.Log(damage);
+        }
+        
     }
 
 
