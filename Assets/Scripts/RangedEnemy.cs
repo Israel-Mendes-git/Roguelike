@@ -41,6 +41,7 @@ public class RangedEnemy : MonoBehaviour
         playerController = FindObjectOfType<Player_Controller>();
         portalManager = GameObject.FindObjectOfType<PortalManager>();
         BuffEnemy();
+
     }
 
     void Update()
@@ -62,6 +63,7 @@ public class RangedEnemy : MonoBehaviour
                 anim.SetBool("IsShot", isShot); 
             }
         }
+        
     }
 
     private void FixedUpdate()

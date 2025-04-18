@@ -9,14 +9,14 @@ public class SistemaArma : MonoBehaviour
     float angle;
 
     [SerializeField] SpriteRenderer srGun;
-    [SerializeField] float tempoEntreTiros;
+    [SerializeField] public float tempoEntreTiros;
     public bool podeAtirar = false;
     private Player_Controller controller;
 
     [SerializeField] Transform pontoDeFogo;
     [SerializeField] GameObject tiro;
     [SerializeField] public float damage;
-    [SerializeField] private int energy;
+    [SerializeField] public int energy;
     private Enemy_controller enemy;
     private RangedEnemy ranged;
     [SerializeField] public SpriteRenderer srWeapon;

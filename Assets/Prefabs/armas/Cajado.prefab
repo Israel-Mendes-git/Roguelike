@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 62bccdb8aa8221e4a87600e150ab4b26, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5a6e442f412796445a40b0c3713fbfa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,12 +158,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   srGun: {fileID: 3794971646278064302}
-  tempoEntreTiros: 1.6
+  tempoEntreTiros: 0.6
   podeAtirar: 1
   pontoDeFogo: {fileID: 3064417616955170270}
-  tiro: {fileID: 7812221749153112124, guid: cd57a1057ea04b04eb7b4a4dd5f720ee, type: 3}
+  tiro: {fileID: 7812221749153112124, guid: 821851a9421ac9f409e51fbff8c02792, type: 3}
   damage: 3
   energy: 2
+  srWeapon: {fileID: 3794971646278064302}
 --- !u!1 &6767334671950629643
 GameObject:
   m_ObjectHideFlags: 0

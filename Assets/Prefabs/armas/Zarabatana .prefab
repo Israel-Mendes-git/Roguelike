@@ -192,6 +192,7 @@ MonoBehaviour:
   tempoEntreTiros: 1
   podeAtirar: 1
   pontoDeFogo: {fileID: 690183680149135206}
-  tiro: {fileID: 7812221749153112124, guid: 23a6101a12b8ce64d9091b3acb6859d2, type: 3}
+  tiro: {fileID: 5147381322356426065, guid: e7c42ae782506af40a2e3af7f494d1f4, type: 3}
   damage: 2
   energy: 2
+  srWeapon: {fileID: 9053024671039868669}

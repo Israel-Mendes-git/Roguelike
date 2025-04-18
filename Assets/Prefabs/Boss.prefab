@@ -1,5 +1,87 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1660302485900043888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7163705302747247478}
+  - component: {fileID: 6214788851849959321}
+  - component: {fileID: 4255361476429287395}
+  m_Layer: 0
+  m_Name: Area Detection
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7163705302747247478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660302485900043888}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1.6382483, y: 2.229839, z: 11.97445}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 857015534957208354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &6214788851849959321
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660302485900043888}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0014738025, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.0471414
+--- !u!114 &4255361476429287395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660302485900043888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a3bc5846ba9e54080885d50dc6be75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagTarget: Player
+  detectedObjs: []
 --- !u!1 &2258162806945078412
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,6 +208,7 @@ GameObject:
   - component: {fileID: 857015534957208354}
   - component: {fileID: 4235285136337177594}
   - component: {fileID: 8632476742264884916}
+  - component: {fileID: 4830277606822581294}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -148,6 +231,7 @@ Transform:
   m_Children:
   - {fileID: 687027564743135429}
   - {fileID: 5653752593515865839}
+  - {fileID: 7163705302747247478}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4235285136337177594
@@ -221,8 +305,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1302600905489090060, guid: 49b4e4949bc0e034cbcc280b35d752e6, type: 3}
   distanceToShoot: 5
   distanceToStop: 5
-  fireRate: 3
-  detectionArea: {fileID: 0}
+  fireRate: 1
+  detectionArea: {fileID: 4255361476429287395}
   playerController: {fileID: 0}
   sistema: {fileID: 0}
   melee: {fileID: 0}
@@ -230,3 +314,38 @@ MonoBehaviour:
   firingPoint: {fileID: 5653752593515865839}
   HP: 30
   damage: 2
+--- !u!70 &4830277606822581294
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7781701129276532320}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.07766978, y: 0.3871354}
+  m_Size: {x: 2.274686, y: 2.681363}
+  m_Direction: 0

@@ -213,6 +213,10 @@ public class Player_Controller : MonoBehaviour
                     HP -= bullet.damage; // Aplica o dano correto
                     Debug.Log("Player tomou " + bullet.damage + " de dano! HP atual: " + HP);
                 }
+                if (HP <= 0)
+                {
+                    StartCoroutine(Die());
+                }
                 else
                 {
                     Debug.LogError("A bala não tem o script EnemyShoot!");

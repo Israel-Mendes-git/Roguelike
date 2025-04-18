@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.68, y: 2.24, z: 0.02135105}
-  m_LocalScale: {x: 2.79907, y: 3.0648124, z: 2.5839}
+  m_LocalScale: {x: 2.193351, y: 2.3675675, z: 2.5839}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3096220885402419488}
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.036231607, y: -0.03640032}
+  m_Offset: {x: 0.00037885457, y: -0.060556278}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0.32999998, z: 0, w: 0.38}
     pivot: {x: 0.5, y: 0.5}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.27256724, y: 0.9204407}
+  m_Size: {x: 0.2008617, y: 0.62654305}
   m_EdgeRadius: 0
 --- !u!114 &6317110586673412249
 MonoBehaviour:
@@ -164,6 +164,7 @@ MonoBehaviour:
   tiro: {fileID: 7812221749153112124, guid: 443b4d48d8a1b554b91762b243dfbb1c, type: 3}
   damage: 15
   energy: 5
+  srWeapon: {fileID: 1978086095957182384}
 --- !u!1 &8156429647079721155
 GameObject:
   m_ObjectHideFlags: 0

@@ -164,6 +164,7 @@ MonoBehaviour:
   tiro: {fileID: 7812221749153112124, guid: 23a6101a12b8ce64d9091b3acb6859d2, type: 3}
   damage: 5
   energy: 3
+  srWeapon: {fileID: 8807084451520652043}
 --- !u!1 &4914973870374430216
 GameObject:
   m_ObjectHideFlags: 0
