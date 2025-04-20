@@ -21,7 +21,7 @@ public class EnemyShoot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("Walls")))
         {
             Destroy(gameObject);
         }

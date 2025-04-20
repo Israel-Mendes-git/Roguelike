@@ -18,6 +18,8 @@ public class ShopSystem : MonoBehaviour
     [SerializeField] public DialogueTrigger dialogueTrigger;
     [SerializeField] private GameObject ShopInfo;
     private Animator anim;
+    private bool isShowingInfo = false;
+
 
 
 
@@ -70,131 +72,156 @@ public class ShopSystem : MonoBehaviour
 
         if (detectionArea.detectedObjs.Count > 0)
         {
-            ShopInfo.gameObject.SetActive(true);
-            anim.Play("ShopInfo");
-            ShowShopInfo();
+            if (!isShowingInfo)
+            {
+                ShowShopInfo();
+                isShowingInfo = true;
+            }
         }
         else
         {
-            anim.Play("hideShopInfo");
-            ShopInfo.gameObject.SetActive(false);
+            if (isShowingInfo)
+            {
+                anim.Play("hideShopInfo");
+                isShowingInfo = false;
+            }
         }
-        
     }
+
 
     private void ShowShopInfo()
     {
+        anim.Play("ShopInfo");
+
+        var info = ShopInfo.GetComponent<ShopInfo>();
+        info.NameTxt.text = currentItem.name;
+        info.CostTxt.text = $"Custo: {coinRequery}";
+
+        // Verifica se é uma arma
         if (currentItem.CompareTag("Arma") || currentItem.CompareTag("Espada"))
         {
-            ShopInfo.GetComponent<ShopInfo>().NameTxt.text = $"{currentItem.name}";
-            ShopInfo.GetComponent<ShopInfo>().DamageTxt.text = $"Dano: {currentItem.GetComponent<SistemaArma>().damage}";
-            ShopInfo.GetComponent<ShopInfo>().EnergyTxt.text = $"Gasto de energia: {currentItem.GetComponent<SistemaArma>().energy}";
-            ShopInfo.GetComponent<ShopInfo>().CooldownTxt.text = $"Cooldown: {currentItem.GetComponent<SistemaArma>().tempoEntreTiros}";
-            ShopInfo.GetComponent<ShopInfo>().WeaponImage.sprite = currentItem.GetComponent<SistemaArma>().srWeapon.sprite;
-            ShopInfo.GetComponent<ShopInfo>().CostTxt.text = $"Custo: {coinRequery}";
-        }
-        if(currentItem.CompareTag("Potions"))
-        {
-            ShopInfo.GetComponent<ShopInfo>().NameTxt.text = $"{currentItem.name}";
-            ShopInfo.GetComponent<ShopInfo>().DamageTxt.text = null;
-            ShopInfo.GetComponent<ShopInfo>().EnergyTxt.text = $"+{currentItem.GetComponent<HealthPotion>().Heal} de vida";
-            if(currentItem.GetComponent<HealthPotion>() == null)
+            var arma = currentItem.GetComponent<SistemaArma>();
+            if (arma != null)
             {
-                ShopInfo.GetComponent<ShopInfo>().EnergyTxt.text = $"+{currentItem.GetComponent<HealthIncrement>().HPIncrement} de vida máxima";
-                ShopInfo.GetComponent<ShopInfo>().WeaponImage.sprite = currentItem.GetComponent<HealthIncrement>().potion.sprite;
-                if (currentItem.GetComponent<HealthIncrement>() == null)
-                {
-                    ShopInfo.GetComponent<ShopInfo>().EnergyTxt.text = $"+{currentItem.GetComponent<EnergyPotion>().EnergyRestore} de energia";
-                    ShopInfo.GetComponent<ShopInfo>().WeaponImage.sprite = currentItem.GetComponent<EnergyPotion>().potion.sprite;
-                    if (currentItem.GetComponent<EnergyPotion>() == null)
-                    {
-                        ShopInfo.GetComponent<ShopInfo>().WeaponImage.sprite = currentItem.GetComponent<EnergyIncrement>().potion.sprite;
-                        ShopInfo.GetComponent<ShopInfo>().EnergyTxt.text = $"+{currentItem.GetComponent<EnergyIncrement>().energyIncrement} de energia máxima";
-                    }
-                }
-                
+                info.DamageTxt.text = $"Dano: {arma.damage}";
+                info.EnergyTxt.text = $"Gasto de energia: {arma.energy}";
+                info.CooldownTxt.text = $"Cooldown: {arma.tempoEntreTiros}";
+                info.WeaponImage.sprite = arma.srWeapon.sprite;
             }
-            ShopInfo.GetComponent<ShopInfo>().CooldownTxt.text = null;
-            ShopInfo.GetComponent<ShopInfo>().WeaponImage.sprite = currentItem.GetComponent<HealthPotion>().potion.sprite;
-            ShopInfo.GetComponent<ShopInfo>().CostTxt.text = $"Custo: {coinRequery}";
         }
-
-    }
-
-    private void BuyItem()
-    {
-        if (currentItem == null) return;
-
-        if (playerController.Coin < coinRequery)
-        {
-            Debug.Log("Moedas insuficientes!");
-            dialogueTrigger.TriggerDialogue();
-            
-            return;
-        }
-
-        playerController.Coin -= coinRequery;
-
-        if (currentItem.CompareTag("Arma") || currentItem.CompareTag("Espada"))
-        {
-            if (playerController.coldre.childCount > 0)
-            {
-                Transform oldWeapon = playerController.coldre.GetChild(0);
-
-                if (playerController.coldreSecundário.childCount > 0)
-                {
-                    Transform oldSecondary = playerController.coldreSecundário.GetChild(0);
-                    oldSecondary.SetParent(null);
-                    oldSecondary.position = playerController.transform.position + new Vector3(2, 0, 0);
-                    oldSecondary.gameObject.SetActive(true);
-                }
-
-                oldWeapon.SetParent(playerController.coldreSecundário);
-                oldWeapon.localPosition = Vector3.zero;
-                oldWeapon.localRotation = Quaternion.identity;
-                oldWeapon.gameObject.SetActive(false);
-            }
-
-            GameObject newItem = Instantiate(currentItem, playerController.coldre);
-            newItem.transform.localPosition = Vector3.zero;
-            newItem.transform.localRotation = Quaternion.identity;
-            newItem.SetActive(true);
-
-            SistemaArma sistemaArma = newItem.GetComponent<SistemaArma>();
-            if (sistemaArma != null)
-            {
-                sistemaArma.CDTiro();
-            }
-
-            Debug.Log("Comprou: " + currentItem.name);
-        }
+        // Verifica se é uma poção
         else if (currentItem.CompareTag("Potions"))
         {
-            GameObject potion = Instantiate(currentItem, playerController.transform.position, Quaternion.identity);
-            potion.SetActive(true);
-            Debug.Log("Comprou: " + currentItem.name);
-        }
+            // Tenta encontrar o tipo de poção específico
+            var potionHeal = currentItem.GetComponent<HealthPotion>();
+            var potionHP = currentItem.GetComponent<HealthIncrement>();
+            var potionEnergy = currentItem.GetComponent<EnergyPotion>();
+            var potionEnergyInc = currentItem.GetComponent<EnergyIncrement>();
 
-        // Após a compra, remove o item da loja
-        currentItem = null;
+            info.DamageTxt.text = null;
+            info.CooldownTxt.text = null;
 
-        if (localItem.childCount > 0)
-        {
-            Destroy(localItem.GetChild(0).gameObject);
+            if (potionHeal != null)
+            {
+                info.EnergyTxt.text = $"+{potionHeal.Heal} de vida";
+                info.WeaponImage.sprite = potionHeal.potion.sprite;
+            }
+            else if (potionHP != null)
+            {
+                info.EnergyTxt.text = $"+{potionHP.HPIncrement} de vida máxima";
+                info.WeaponImage.sprite = potionHP.potion.sprite;
+            }
+            else if (potionEnergy != null)
+            {
+                info.EnergyTxt.text = $"+{potionEnergy.EnergyRestore} de energia";
+                info.WeaponImage.sprite = potionEnergy.potion.sprite;
+            }
+            else if (potionEnergyInc != null)
+            {
+                info.EnergyTxt.text = $"+{potionEnergyInc.energyIncrement} de energia máxima";
+                info.WeaponImage.sprite = potionEnergyInc.potion.sprite;
+            }
+            else
+            {
+                info.EnergyTxt.text = "Poção desconhecida";
+                info.WeaponImage.sprite = null;
+            }
         }
     }
-
-    public void ResetShop()
+    private void BuyItem()
     {
-        if (localItem.childCount > 0)
-        {
-            Destroy(localItem.GetChild(0).gameObject);
+            if (currentItem == null) return;
+
+            if (playerController.Coin < coinRequery)
+            {
+                Debug.Log("Moedas insuficientes!");
+                dialogueTrigger.TriggerDialogue();
+
+                return;
+            }
+
+            playerController.Coin -= coinRequery;
+
+            if (currentItem.CompareTag("Arma") || currentItem.CompareTag("Espada"))
+            {
+                if (playerController.coldre.childCount > 0)
+                {
+                    Transform oldWeapon = playerController.coldre.GetChild(0);
+
+                    if (playerController.coldreSecundário.childCount > 0)
+                    {
+                        Transform oldSecondary = playerController.coldreSecundário.GetChild(0);
+                        oldSecondary.SetParent(null);
+                        oldSecondary.position = playerController.transform.position + new Vector3(2, 0, 0);
+                        oldSecondary.gameObject.SetActive(true);
+                    }
+
+                    oldWeapon.SetParent(playerController.coldreSecundário);
+                    oldWeapon.localPosition = Vector3.zero;
+                    oldWeapon.localRotation = Quaternion.identity;
+                    oldWeapon.gameObject.SetActive(false);
+                }
+
+                GameObject newItem = Instantiate(currentItem, playerController.coldre);
+                newItem.transform.localPosition = Vector3.zero;
+                newItem.transform.localRotation = Quaternion.identity;
+                newItem.SetActive(true);
+
+                SistemaArma sistemaArma = newItem.GetComponent<SistemaArma>();
+                if (sistemaArma != null)
+                {
+                    sistemaArma.CDTiro();
+                }
+
+                Debug.Log("Comprou: " + currentItem.name);
+            }
+            else if (currentItem.CompareTag("Potions"))
+            {
+                GameObject potion = Instantiate(currentItem, playerController.transform.position, Quaternion.identity);
+                potion.SetActive(true);
+                Debug.Log("Comprou: " + currentItem.name);
+            }
+
+            // Após a compra, remove o item da loja
+            currentItem = null;
+
+            if (localItem.childCount > 0)
+            {
+                Destroy(localItem.GetChild(0).gameObject);
+            }
         }
 
-        ChooseRandomItem();
-        Debug.Log(displayedItem);
+        public void ResetShop()
+        {
+            if (localItem.childCount > 0)
+            {
+                Destroy(localItem.GetChild(0).gameObject);
+            }
+
+            ChooseRandomItem();
+            Debug.Log(displayedItem);
+        }
     }
 
 
-    
-}
+     

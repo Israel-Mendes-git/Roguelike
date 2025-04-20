@@ -11,7 +11,9 @@ public class MeleeAttack : MonoBehaviour
 
     private Player_Controller controller;
     [SerializeField] private float animationTime;
-    
+    private Collider2D hitbox; 
+    private float originalY;
+
 
 
     private float timeUntilMelee;
@@ -40,11 +42,12 @@ public class MeleeAttack : MonoBehaviour
         }
     }
 
-    private Collider2D hitbox; // Adicione isso como variável
+    
 
     private void Start()
     {
         controller = FindObjectOfType<Player_Controller>();
+        originalY = transform.localScale.y;
         hitbox = GetComponent<Collider2D>();
         
     }
@@ -116,24 +119,20 @@ public class MeleeAttack : MonoBehaviour
 
     void UpdatePosition()
     {
-        if (controller.mov.x < 0) // Movendo para a esquerda
+        Vector3 scale = transform.localScale;
+
+        if (controller.mov.x < 0 || controller.WalkEsq)
         {
-            srWeapon.flipX = true;
+            scale.x = -Mathf.Abs(scale.x);
         }
-        else if (controller.mov.x > 0)
+        else if (controller.mov.x > 0 || controller.WalkDir)
         {
-            srWeapon.flipX = false;
+            scale.x = Mathf.Abs(scale.x);
         }
-        else
-        {
-            if (controller.WalkDir) // Se estava indo para a direita
-            {
-                srWeapon.flipX = false;
-            }
-            else if (controller.WalkEsq) // Se estava indo para a esquerda
-            {
-                srWeapon.flipX = true;
-            }
-        }
+
+        transform.localScale = scale;
+
     }
+
+
 }

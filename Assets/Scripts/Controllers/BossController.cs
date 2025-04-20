@@ -19,8 +19,6 @@ public class BossController : MonoBehaviour
     private float timeToFire;
     public Detection_controller detectionArea;
     public Player_Controller playerController;
-    public SistemaArma sistema;
-    public MeleeAttack melee;
     [SerializeField] GameObject Coin;
     private PortalManager portalManager;
 
@@ -33,8 +31,6 @@ public class BossController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         detectionArea = GetComponentInChildren<Detection_controller>(); // Pega o script no filho
         anim = GetComponent<Animator>();
-        sistema = GetComponent<SistemaArma>();
-        melee = GetComponent<MeleeAttack>();
         playerController = FindObjectOfType<Player_Controller>();
         portalManager = GameObject.FindObjectOfType<PortalManager>();
         BuffEnemy();
@@ -152,26 +148,11 @@ public class BossController : MonoBehaviour
     void BuffEnemy()
     {
         Debug.Log(portalManager.contador);
-        if (portalManager.contador >= 3)
+        if (portalManager.contador % 5 == 0 && (portalManager.contador > 5))
         {
-            HP += 2;
-            damage += 2;
+            HP += 10;
+            damage += 3;
             Debug.Log(damage);
-        }
-        if (portalManager.contador >= 6)
-        {
-            HP += 2;
-            damage += 2;
-        }
-        if (portalManager.contador >= 9)
-        {
-            HP += 2;
-            damage += 2;
-        }
-        if (portalManager.contador >= 15)
-        {
-            HP += 5;
-            damage += 5;
         }
     }
 

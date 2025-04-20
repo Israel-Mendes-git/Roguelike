@@ -13,10 +13,13 @@ public class ShopInfo : MonoBehaviour
     public Text CooldownTxt;
     public Image WeaponImage;
 
-    private void Start()
+    [SerializeField]
+    private Animator anim;
+
+    private void Awake()
     {
-        this.gameObject.SetActive(false);
+        anim.Play("idleShopInfo");
     }
-    
+
 
 }
