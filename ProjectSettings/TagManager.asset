@@ -21,6 +21,7 @@ TagManager:
   - Shop
   - Portal
   - Walls
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -29,8 +30,8 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
-  - 
+  - Weapon
+  - Enemy
   - 
   - 
   - 

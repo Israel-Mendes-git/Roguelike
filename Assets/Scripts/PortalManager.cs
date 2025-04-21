@@ -7,6 +7,8 @@ public class PortalManager : MonoBehaviour
     private RoomFirstDungeonGenerator roomGenerator;
     private GameObject player;
     public int contador;
+    public GameObject bossPrefab; // arraste o prefab do boss aqui pelo Inspector
+    private GameObject currentBoss; // referência ao boss instanciado, se quiser manter controle
 
     private void Start()
     {
@@ -27,13 +29,20 @@ public class PortalManager : MonoBehaviour
     {
         contador++;
 
+        // Destroi o boss da fase anterior, se ainda existir
+        if (currentBoss != null)
+        {
+            Destroy(currentBoss);
+            currentBoss = null;
+        }
+
         // Limpa a dungeon
         roomGenerator.ClearDungeon();
 
         // Recria a dungeon
         roomGenerator.CreateRooms();
 
-        // Reposiciona o jogador na nova primeira sala gerada
+        // Reposiciona o jogador
         if (player != null)
         {
             player.transform.position = new Vector3(
@@ -43,7 +52,7 @@ public class PortalManager : MonoBehaviour
             );
         }
 
-        // Move o portal para a última sala gerada
+        // Move o portal
         Vector2 portalPosition = roomGenerator.GetLastRoomPosition();
         transform.position = new Vector3(
             portalPosition.x + 0.5f,
@@ -51,7 +60,7 @@ public class PortalManager : MonoBehaviour
             0
         );
 
-        // Reposiciona a loja principal (opcional, se só há uma que é movimentada)
+        // Reposiciona a loja principal
         GameObject shop = GameObject.FindWithTag("Shop");
         if (shop != null)
         {
@@ -62,7 +71,7 @@ public class PortalManager : MonoBehaviour
             );
         }
 
-        // Resetar todas as lojas da cena
+        // Resetar todas as lojas
         ShopSystem[] allShops = FindObjectsOfType<ShopSystem>();
         foreach (ShopSystem shopSystem in allShops)
         {
@@ -72,12 +81,14 @@ public class PortalManager : MonoBehaviour
         // Spawna o boss a cada 5 leveis
         if (contador % 5 == 0)
         {
-            GameObject boss = GameObject.FindWithTag("Boss");
-            boss.transform.position = new Vector3(
+            Vector3 bossSpawnPos = new Vector3(
                 roomGenerator.BossSpawnPosition.x + 0.5f,
                 roomGenerator.BossSpawnPosition.y + 0.5f,
                 0
             );
+
+            currentBoss = Instantiate(bossPrefab, bossSpawnPos, Quaternion.identity);
         }
     }
+
 }

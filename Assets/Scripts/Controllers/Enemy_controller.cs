@@ -1,10 +1,10 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy_controller : MonoBehaviour
 {
-    //===VARI¡VEIS DO ENEMY CONTROLLER===//
+    //===VARI√ÅVEIS DO ENEMY CONTROLLER===//
     public float moveSpeed = 2f;
     Rigidbody2D rig;
     public Transform target;
@@ -26,7 +26,7 @@ public class Enemy_controller : MonoBehaviour
 
     private void Awake()
     {
-        // Atribui um componente de fÌsica ‡ vari·vel
+        // Atribui um componente de f√≠sica √† vari√°vel
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -36,7 +36,7 @@ public class Enemy_controller : MonoBehaviour
 
     void Start()
     {
-        // A vari·vel target recebe o valor do GameObject com a tag "Player"
+        // A vari√°vel target recebe o valor do GameObject com a tag "Player"
         target = GameObject.FindGameObjectWithTag("Player")?.transform;
         portalManager = GameObject.FindObjectOfType<PortalManager>();
         BuffEnemy();
@@ -46,7 +46,7 @@ public class Enemy_controller : MonoBehaviour
     {
         if (target)
         {
-            // Armazena a direÁ„o horizontal e vertical do movimento em um vetor 2D
+            // Armazena a dire√ß√£o horizontal e vertical do movimento em um vetor 2D
             moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
         UpdateAnimator();
@@ -55,10 +55,10 @@ public class Enemy_controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Caso a quantidade de objetos dentro da ·rea de detecÁ„o seja maior que 0
+        // Caso a quantidade de objetos dentro da √°rea de detec√ß√£o seja maior que 0
         if (detectionArea.detectedObjs.Count > 0)
         {
-            // A direÁ„o do movimento do inimigo È atÈ o player
+            // A dire√ß√£o do movimento do inimigo √© at√© o player
             moveDirection = (detectionArea.detectedObjs[0].transform.position - transform.position).normalized;
 
             rig.MovePosition(rig.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
@@ -67,15 +67,15 @@ public class Enemy_controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Colis„o detectada com: " + collision.gameObject.name);
+        Debug.Log("Colis√£o detectada com: " + collision.gameObject.name);
 
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("Objeto detectado È uma bala ou espada");
+            Debug.Log("Objeto detectado √© uma bala ou espada");
 
             if (playerController != null && playerController.coldre != null)
             {
-                
+
                 if (collision.gameObject.CompareTag("Bullet"))
                 {
                     SistemaArma arma = playerController.coldre.GetComponentInChildren<SistemaArma>();
@@ -86,24 +86,27 @@ public class Enemy_controller : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Erro: Arma n„o encontrada no coldre!");
+                        Debug.Log("Erro: Arma n√£o encontrada no coldre!");
                     }
                 }
             }
         }
     }
 
+
     void BuffEnemy()
     {
-        Debug.Log(portalManager.contador);
-        if(portalManager.contador % 3 == 0 && (portalManager.contador > 0))
+        int multiplicador = portalManager.contador / 3;
+
+        if (multiplicador > 0)
         {
-            HP += 5;
-            damage += 1;
-            Debug.Log(damage);
+            HP += 5 * multiplicador;
+            damage += 1 * multiplicador;
+            Debug.Log($"Buff aplicado! x{multiplicador} ‚Üí HP: {HP}, Dano: {damage}");
         }
-        
     }
+    
+
 
 
     public void TakeDamage(float damage)

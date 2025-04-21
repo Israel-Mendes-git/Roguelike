@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Tilemaps;
@@ -82,7 +82,7 @@ public class RangedEnemy : MonoBehaviour
         else
         {
             rb.velocity = Vector2.zero;
-            target = null; // Reseta o alvo se ele sair da área de detecção
+            target = null; // Reseta o alvo se ele sair da Ã¡rea de detecÃ§Ã£o
         }
     }
 
@@ -100,7 +100,7 @@ public class RangedEnemy : MonoBehaviour
             }
         }
 
-        // Se não encontrou um alvo válido, zera o target e para o inimigo
+        // Se nÃ£o encontrou um alvo vÃ¡lido, zera o target e para o inimigo
         target = null;
         rb.velocity = Vector2.zero;
     }
@@ -156,14 +156,14 @@ public class RangedEnemy : MonoBehaviour
 
     void BuffEnemy()
     {
-        Debug.Log(portalManager.contador);
-        if (portalManager.contador % 3 == 0 && (portalManager.contador > 0))
+        int multiplicador = portalManager.contador / 3;
+
+        if (multiplicador > 0)
         {
-            HP += 2;
-            damage += 2;
-            Debug.Log(damage);
+            HP += 2 * multiplicador;
+            damage += 2 * multiplicador;
+            Debug.Log($"Buff aplicado! x{multiplicador} â†’ HP: {HP}, Dano: {damage}");
         }
-        
     }
 
     public void TakeDamage(float damage)

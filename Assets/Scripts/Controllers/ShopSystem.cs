@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,8 +13,8 @@ public class ShopSystem : MonoBehaviour
 
     [SerializeField] private List<GameObject> itemsToSell; // Lista de todos os itens da loja
     private GameObject currentItem; // Item atual da loja
-    [SerializeField] private Transform localItem; // Ponto onde o item é exibido
-    private GameObject displayedItem; // Referência ao item instanciado na loja
+    [SerializeField] private Transform localItem; // Ponto onde o item Ã© exibido
+    private GameObject displayedItem; // ReferÃªncia ao item instanciado na loja
     [SerializeField] public DialogueTrigger dialogueTrigger;
     [SerializeField] private GameObject ShopInfo;
     private Animator anim;
@@ -59,7 +59,7 @@ public class ShopSystem : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("A lista de itens da loja está vazia!");
+            Debug.LogWarning("A lista de itens da loja estÃ¡ vazia!");
         }
     }
 
@@ -70,7 +70,7 @@ public class ShopSystem : MonoBehaviour
             BuyItem();
         }
 
-        if (detectionArea.detectedObjs.Count > 0)
+        if (detectionArea.detectedObjs.Count > 0 && currentItem != null)
         {
             if (!isShowingInfo)
             {
@@ -86,18 +86,22 @@ public class ShopSystem : MonoBehaviour
                 isShowingInfo = false;
             }
         }
+
     }
 
 
     private void ShowShopInfo()
     {
+        if (currentItem == null) return; // ðŸ”’ Garante que nÃ£o tente acessar item nulo
+
         anim.Play("ShopInfo");
 
         var info = ShopInfo.GetComponent<ShopInfo>();
         info.NameTxt.text = currentItem.name;
         info.CostTxt.text = $"Custo: {coinRequery}";
 
-        // Verifica se é uma arma
+
+        // Verifica se Ã© uma arma
         if (currentItem.CompareTag("Arma") || currentItem.CompareTag("Espada"))
         {
             var arma = currentItem.GetComponent<SistemaArma>();
@@ -109,10 +113,10 @@ public class ShopSystem : MonoBehaviour
                 info.WeaponImage.sprite = arma.srWeapon.sprite;
             }
         }
-        // Verifica se é uma poção
+        // Verifica se Ã© uma poÃ§Ã£o
         else if (currentItem.CompareTag("Potions"))
         {
-            // Tenta encontrar o tipo de poção específico
+            // Tenta encontrar o tipo de poÃ§Ã£o especÃ­fico
             var potionHeal = currentItem.GetComponent<HealthPotion>();
             var potionHP = currentItem.GetComponent<HealthIncrement>();
             var potionEnergy = currentItem.GetComponent<EnergyPotion>();
@@ -128,7 +132,7 @@ public class ShopSystem : MonoBehaviour
             }
             else if (potionHP != null)
             {
-                info.EnergyTxt.text = $"+{potionHP.HPIncrement} de vida máxima";
+                info.EnergyTxt.text = $"+{potionHP.HPIncrement} de vida mÃ¡xima";
                 info.WeaponImage.sprite = potionHP.potion.sprite;
             }
             else if (potionEnergy != null)
@@ -138,12 +142,12 @@ public class ShopSystem : MonoBehaviour
             }
             else if (potionEnergyInc != null)
             {
-                info.EnergyTxt.text = $"+{potionEnergyInc.energyIncrement} de energia máxima";
+                info.EnergyTxt.text = $"+{potionEnergyInc.energyIncrement} de energia mÃ¡xima";
                 info.WeaponImage.sprite = potionEnergyInc.potion.sprite;
             }
             else
             {
-                info.EnergyTxt.text = "Poção desconhecida";
+                info.EnergyTxt.text = "PoÃ§Ã£o desconhecida";
                 info.WeaponImage.sprite = null;
             }
         }
@@ -168,15 +172,15 @@ public class ShopSystem : MonoBehaviour
                 {
                     Transform oldWeapon = playerController.coldre.GetChild(0);
 
-                    if (playerController.coldreSecundário.childCount > 0)
+                    if (playerController.coldreSecundÃ¡rio.childCount > 0)
                     {
-                        Transform oldSecondary = playerController.coldreSecundário.GetChild(0);
+                        Transform oldSecondary = playerController.coldreSecundÃ¡rio.GetChild(0);
                         oldSecondary.SetParent(null);
                         oldSecondary.position = playerController.transform.position + new Vector3(2, 0, 0);
                         oldSecondary.gameObject.SetActive(true);
                     }
 
-                    oldWeapon.SetParent(playerController.coldreSecundário);
+                    oldWeapon.SetParent(playerController.coldreSecundÃ¡rio);
                     oldWeapon.localPosition = Vector3.zero;
                     oldWeapon.localRotation = Quaternion.identity;
                     oldWeapon.gameObject.SetActive(false);
@@ -202,12 +206,14 @@ public class ShopSystem : MonoBehaviour
                 Debug.Log("Comprou: " + currentItem.name);
             }
 
-            // Após a compra, remove o item da loja
+            // ApÃ³s a compra, remove o item da loja
             currentItem = null;
+            
 
             if (localItem.childCount > 0)
             {
                 Destroy(localItem.GetChild(0).gameObject);
+                
             }
         }
 

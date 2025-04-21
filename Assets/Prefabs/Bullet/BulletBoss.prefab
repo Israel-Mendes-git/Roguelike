@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d449b7f6353354891a661f0f3fa945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   tempoDeVida: 2
   damage: 2
 --- !u!1 &5042350315574111701
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d449b7f6353354891a661f0f3fa945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   tempoDeVida: 2
   damage: 2
 --- !u!1 &5311361084888912671
@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d449b7f6353354891a661f0f3fa945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   tempoDeVida: 2
   damage: 2
 --- !u!1 &5597006762150724629
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d449b7f6353354891a661f0f3fa945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   tempoDeVida: 2
   damage: 2
 --- !u!1 &8319623594341017511
@@ -853,6 +853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d449b7f6353354891a661f0f3fa945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   tempoDeVida: 2
   damage: 2

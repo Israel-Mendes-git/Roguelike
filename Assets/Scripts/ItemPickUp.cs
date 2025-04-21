@@ -5,10 +5,12 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     private Player_Controller player;
+    private Collider2D collider;
 
     void Start()
     {
         player = FindObjectOfType<Player_Controller>();
+        collider = GetComponent<Collider2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,6 +25,7 @@ public class ItemPickUp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            collider.enabled = true;
             DropWeapon();
         }
     }
@@ -41,15 +44,25 @@ public class ItemPickUp : MonoBehaviour
             armaAntiga.localRotation = Quaternion.identity;
             this.gameObject.transform.SetParent(player.coldre);
         }
-        else // Se ambos os coldres estiverem ocupados, dropar a arma principal e equipar a nova arma
+        else // Se ambos os coldres estiverem ocupados, dropar a principal e reposicionar as outras
         {
-            DropWeapon();
-            this.gameObject.transform.SetParent(player.coldre);
+            DropWeapon(); // Isso promove a arma secundária pra principal
+
+            if (player.coldre.childCount == 0) // Se o coldre ficou vazio após a promoção (por segurança)
+            {
+                this.gameObject.transform.SetParent(player.coldre);
+            }
+            else // Caso a secundária tenha sido promovida e agora temos uma arma no principal
+            {
+                this.gameObject.transform.SetParent(player.coldreSecundário);
+            }
         }
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        collider.enabled = false;
     }
+
 
     void DropWeapon()
     {
