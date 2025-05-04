@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3086165593322527443}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo (2)
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 1886896191333746378}
   - component: {fileID: 4035923003185135320}
   - component: {fileID: 8625723494319057915}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Smg Aprimorada
-  m_TagString: Untagged
+  m_TagString: Arma
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3297493137736149454}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.22, y: -2.86, z: 0.027995508}
   m_LocalScale: {x: 0.1733, y: 0.1733, z: 1}
   m_ConstrainProportionsScale: 0
@@ -139,6 +139,15 @@ MonoBehaviour:
   damage: 2
   energy: 1
   srWeapon: {fileID: 3924396153711906267}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 1
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!114 &4035923003185135320
 MonoBehaviour:
   m_ObjectHideFlags: 0

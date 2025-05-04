@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4020479936245300251}
   - component: {fileID: 7499073741025812647}
   - component: {fileID: 397612373027955287}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Arco
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.010439247, y: 0.0100259185}
+  m_Offset: {x: -0.37875962, y: -0.3705298}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.33009374, y: 0.5569049}
+  m_Size: {x: 4.3272595, y: 1.7863927}
   m_EdgeRadius: 0
 --- !u!114 &7499073741025812647
 MonoBehaviour:
@@ -165,6 +165,15 @@ MonoBehaviour:
   damage: 5
   energy: 3
   srWeapon: {fileID: 8807084451520652043}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 1
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!1 &4914973870374430216
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7388633430483470185}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

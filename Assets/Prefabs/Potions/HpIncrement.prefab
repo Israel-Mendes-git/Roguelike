@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HPIncrement: 2
+  potion: {fileID: 6259902931139293784}
 --- !u!61 &2117377921872963782
 BoxCollider2D:
   m_ObjectHideFlags: 0

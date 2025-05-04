@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9041575847286485941}
   - component: {fileID: 5705349275142472812}
   - component: {fileID: 3187059475829159196}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cajado de gelo
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -162,9 +162,18 @@ MonoBehaviour:
   podeAtirar: 1
   pontoDeFogo: {fileID: 8178828709832584281}
   tiro: {fileID: 7812221749153112124, guid: cd57a1057ea04b04eb7b4a4dd5f720ee, type: 3}
-  damage: 4
+  damage: 0.5
   energy: 2
   srWeapon: {fileID: 643325256765432280}
+  isFire: 0
+  isNature: 0
+  isIce: 1
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!1 &4222376226371637973
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8178828709832584281}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

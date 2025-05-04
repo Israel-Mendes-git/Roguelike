@@ -182,3 +182,4 @@ MonoBehaviour:
   meleeSpeed: 1
   damage: 2
   srWeapon: {fileID: 718827516714604323}
+  animationTime: 0

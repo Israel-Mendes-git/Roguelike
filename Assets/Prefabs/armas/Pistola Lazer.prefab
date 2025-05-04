@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2579724213927816432}
   - component: {fileID: 6346905808059923227}
   - component: {fileID: 5434867968500818350}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Pistola Lazer
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -165,6 +165,15 @@ MonoBehaviour:
   damage: 4
   energy: 2
   srWeapon: {fileID: 1660800362207057770}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 1
+  isDuck: 0
+  isCard: 0
 --- !u!1 &4225231265089856415
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2806038673601541807}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

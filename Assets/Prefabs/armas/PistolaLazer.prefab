@@ -165,6 +165,15 @@ MonoBehaviour:
   damage: 4
   energy: 2
   srWeapon: {fileID: 1660800362207057770}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!1 &4225231265089856415
 GameObject:
   m_ObjectHideFlags: 0

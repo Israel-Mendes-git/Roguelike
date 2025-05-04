@@ -16,6 +16,10 @@ public class Player_Controller : MonoBehaviour
     public bool WalkEsq;
     public bool StopWalkDir;
     public bool StopWalkEsq;
+    [SerializeField] private AudioManager audioManager;
+
+    private bool playingFootsteps = false;
+    public float footstepSpeed = 0.5f;
 
     private bool isPaused;
 
@@ -43,7 +47,8 @@ public class Player_Controller : MonoBehaviour
     public string cena;
     public GameObject deadPanel;
     public string playAgain;
-
+    public GameObject options;
+    [SerializeField] private GameObject controls;
 
 
     public int EnemyPoints { get; private set; }
@@ -71,8 +76,10 @@ public class Player_Controller : MonoBehaviour
         }
         Vector2Int spawnPos = FindObjectOfType<RoomFirstDungeonGenerator>().playerSpawnPosition;
         transform.position = new Vector3(spawnPos.x + 0.5f, spawnPos.y + 0.5f, 0);
-        MaxEnergy = Energy;
-        
+        if (MaxEnergy == 0 || MaxEnergy < Energy)
+        {
+            MaxEnergy = Energy;
+        }
 
     }
 
@@ -80,16 +87,18 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (!isPaused && !isDead)
         {
             Mov();
             Dash();
             SwitchWeapon();
             UpdateAnimator();
-        }
+        } 
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            
             PauseScreen();
         }
         DeadScreen();
@@ -98,20 +107,32 @@ public class Player_Controller : MonoBehaviour
     }
     void PauseScreen()
     {
-        if(isPaused)
+        // Se o menu de opções ou controles estiver ativo, não faz nada
+        if (options.activeSelf || controls.activeSelf)
         {
+            Debug.Log("Não pode sair do pause com menus adicionais abertos!");
+            return;
+        }
+
+        if (isPaused)
+        {
+            SoundEffectManager.Play("unPause");
             isPaused = false;
             Time.timeScale = 1f;
             pausePanel.SetActive(false);
+            AudioListener.pause = false;
         }
         else
         {
+            SoundEffectManager.Play("Pause");
             isPaused = true;
             Time.timeScale = 0f;
             pausePanel.SetActive(true);
-            
+            AudioListener.pause = true;
         }
     }
+
+
 
     void DeadScreen()
     {
@@ -129,10 +150,12 @@ public class Player_Controller : MonoBehaviour
 
     void Mov()
     {
+        
         if (speedAtual == speed)
         {
             mov.x = Input.GetAxisRaw("Horizontal");
             mov.y = Input.GetAxisRaw("Vertical");
+            
         }
 
         mov.Normalize();
@@ -156,11 +179,84 @@ public class Player_Controller : MonoBehaviour
             TrocarArma();
         }
     }
+    void SetPauseButtonsInteractable(bool interactable)
+    {
+        Button[] buttons = pausePanel.GetComponentsInChildren<Button>(true);
+        foreach (Button btn in buttons)
+        {
+            if (btn.name != "BackBtn")
+            {
+                btn.interactable = interactable;
+            }
+        }
+    }
+
 
     public void BackToMenu()
     {
+        SoundEffectManager.Play("Button");
         SceneManager.LoadScene(cena);
     }
+
+    public void GoToOptions()
+    {
+        SoundEffectManager.Play("Button");
+        Debug.Log("Abrindo menu de opções");
+
+        options.SetActive(true);
+
+        CanvasGroup group = options.GetComponent<CanvasGroup>();
+        if (group != null)
+        {
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            Debug.Log("CanvasGroup configurado");
+        }
+
+        SetPauseButtonsInteractable(false);
+    }
+    public void GoToControls()
+    {
+        SoundEffectManager.Play("Button");
+
+        controls.SetActive(true);
+
+        CanvasGroup group = controls.GetComponent<CanvasGroup>();
+        if (group != null)
+        {
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            Debug.Log("CanvasGroup configurado");
+        }
+
+        SetPauseButtonsInteractable(false);
+    }
+
+    public void BackToPauseScreen()
+    {
+        SoundEffectManager.Play("Button");
+        options.SetActive(false);
+        SetPauseButtonsInteractable(true);
+    }
+    public void BackToPauseScreenInControls()
+    {
+        Debug.Log("Botão voltar no menu de controles clicado.");
+        if (controls == null || pausePanel == null)
+        {
+            Debug.LogError("Painel de controles ou de pause não está atribuído no Inspector.");
+            return;
+        }
+
+        SoundEffectManager.Play("Button");
+
+        controls.SetActive(false);
+        pausePanel.SetActive(true);
+        isPaused = true;
+
+        SetPauseButtonsInteractable(true);
+    }
+
+
 
     public void Restart()
     {
@@ -170,16 +266,32 @@ public class Player_Controller : MonoBehaviour
 
     public void BackToGame()
     {
+        SoundEffectManager.Play("Button");
         isPaused = false;
         Time.timeScale = 1f;
         pausePanel.SetActive(false);
-
+        AudioListener.pause = false; 
     }
+
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + mov * speedAtual * Time.deltaTime);
+
+        if (!isPaused && !isDead)
+        {
+            if (mov.magnitude > 0.1f && !playingFootsteps)
+            {
+                StartFootsteps();
+            }
+            else if (mov.magnitude <= 0.1f && playingFootsteps)
+            {
+                StopFootsteps();
+            }
+        }
+
     }
+
 
     void PosDash()
     {
@@ -196,6 +308,7 @@ public class Player_Controller : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            SoundEffectManager.Play("Hit");
             int dano = other.gameObject.GetComponent<Enemy_controller>().damage;
             HP -= dano;
             if (HP <= 0)
@@ -236,52 +349,44 @@ public class Player_Controller : MonoBehaviour
 
     void UpdateAnimator()
     {
-        if (mov.x > 0) // Movendo para a direita
+        if (mov.magnitude > 0.1f) // Está se movendo em qualquer direção
         {
-            WalkDir = true;
-            WalkEsq = false;
-            StopWalkDir = false;
-            StopWalkEsq = false;
-
-            anim.SetBool("WalkDir", true);
-            anim.SetBool("WalkEsq", false);
+            anim.SetBool("WalkDir", mov.x > 0);
+            anim.SetBool("WalkEsq", mov.x < 0);
             anim.SetBool("StopWalkDir", false);
             anim.SetBool("StopWalkEsq", false);
-        }
-        else if (mov.x < 0) // Movendo para a esquerda
-        {
-            WalkEsq = true;
-            WalkDir = false;
-            StopWalkDir = false;
-            StopWalkEsq = false;
 
-            anim.SetBool("WalkEsq", true);
-            anim.SetBool("WalkDir", false);
-            anim.SetBool("StopWalkDir", false);
-            anim.SetBool("StopWalkEsq", false);
-        }
-        else // Jogador parou
-        {
-            if (WalkDir) // Se estava indo para a direita
+            WalkDir = mov.x > 0;
+            WalkEsq = mov.x < 0;
+
+            if (!playingFootsteps)
             {
-                StopWalkDir = true;
-                StopWalkEsq = false;
+                StartFootsteps();
             }
-            else if (WalkEsq) // Se estava indo para a esquerda
+        }
+        else // Parado
+        {
+            StopFootsteps();
+
+            anim.SetBool("WalkDir", false);
+            anim.SetBool("WalkEsq", false);
+
+            if (WalkDir)
             {
-                StopWalkEsq = true;
-                StopWalkDir = false;
+                anim.SetBool("StopWalkDir", true);
+                anim.SetBool("StopWalkEsq", false);
+            }
+            else if (WalkEsq)
+            {
+                anim.SetBool("StopWalkDir", false);
+                anim.SetBool("StopWalkEsq", true);
             }
 
             WalkDir = false;
             WalkEsq = false;
-
-            anim.SetBool("WalkDir", false);
-            anim.SetBool("WalkEsq", false);
-            anim.SetBool("StopWalkDir", StopWalkDir);
-            anim.SetBool("StopWalkEsq", StopWalkEsq);
         }
     }
+
     void TrocarArma()
     {
         if (coldre.childCount > 0 && coldreSecundário.childCount > 0) // Verifica se há duas armas equipadas
@@ -304,6 +409,26 @@ public class Player_Controller : MonoBehaviour
             armaPrincipal.gameObject.SetActive(false);
             armaSecundaria.gameObject.SetActive(true);
         }
+    }
+
+    void StartFootsteps()
+    {
+        playingFootsteps = true;
+        InvokeRepeating(nameof(PlayFootstep), 0f, footstepSpeed);
+        Debug.Log("Start Footsteps");
+    }
+
+    void StopFootsteps()
+    {
+        playingFootsteps = false;
+        CancelInvoke(nameof(PlayFootstep));
+        Debug.Log("Footsteps parou");
+    }
+
+    void PlayFootstep()
+    {
+        SoundEffectManager.Play("Run");
+        Debug.Log("o efeito aconteceu");
     }
 
 }

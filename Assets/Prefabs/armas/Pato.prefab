@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9101314152890634050}
   - component: {fileID: 6317110586673412249}
   - component: {fileID: 7038526384352788252}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Pato
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -158,13 +158,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   srGun: {fileID: 1978086095957182384}
-  tempoEntreTiros: 1
+  tempoEntreTiros: 3
   podeAtirar: 1
   pontoDeFogo: {fileID: 3096220885402419488}
   tiro: {fileID: 7812221749153112124, guid: 443b4d48d8a1b554b91762b243dfbb1c, type: 3}
-  damage: 15
+  damage: 5
   energy: 5
   srWeapon: {fileID: 1978086095957182384}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 1
+  isCard: 0
 --- !u!1 &8156429647079721155
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3096220885402419488}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

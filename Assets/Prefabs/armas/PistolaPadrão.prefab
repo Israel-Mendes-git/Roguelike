@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2197808633806356444}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 5433036608428456288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.23, y: 2.11, z: 0}
+  m_LocalPosition: {x: -0.37, y: 2.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 7662798800222222067}
   - component: {fileID: 4453565997825795831}
   - component: {fileID: 287463329828243330}
-  - component: {fileID: 5812574758607450254}
   - component: {fileID: 4365520821616116489}
-  m_Layer: 0
+  - component: {fileID: 2054722428568189237}
+  m_Layer: 2
   m_Name: "PistolaPadr\xE3o"
   m_TagString: "GunPadr\xE3o"
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 16, y: 16}
+    oldSize: {x: 5.4, y: 5.4}
     newSize: {x: 1.84, y: 2.84}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -164,18 +164,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5498828, y: 3.317903}
   m_EdgeRadius: 0
---- !u!114 &5812574758607450254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6153615559928744545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af44d5f24f4893a47b9973157cf33a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4365520821616116489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,7 +180,28 @@ MonoBehaviour:
   tempoEntreTiros: 1
   podeAtirar: 1
   pontoDeFogo: {fileID: 2197808633806356444}
-  tiro: {fileID: 7812221749153112124, guid: c302813bacc3e3141bd06306e3e17971, type: 3}
+  tiro: {fileID: 7812221749153112124, guid: cc280a37f9cd6e24890cdfa47c6fa866, type: 3}
   damage: 1
   energy: 0
   srWeapon: {fileID: 4453565997825795831}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 1
+  isDuck: 0
+  isCard: 0
+--- !u!114 &2054722428568189237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6153615559928744545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44d5f24f4893a47b9973157cf33a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -55,12 +55,14 @@ public class Enemy_controller : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         // Caso a quantidade de objetos dentro da área de detecção seja maior que 0
         if (detectionArea.detectedObjs.Count > 0)
         {
+            
             // A direção do movimento do inimigo é até o player
             moveDirection = (detectionArea.detectedObjs[0].transform.position - transform.position).normalized;
-
+            
             rig.MovePosition(rig.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
         }
     }
@@ -68,9 +70,12 @@ public class Enemy_controller : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Colisão detectada com: " + collision.gameObject.name);
+        if(collision.gameObject.CompareTag("Player"))
+            SoundEffectManager.Play("Enemy");
 
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            SoundEffectManager.Play("Hit");
             Debug.Log("Objeto detectado é uma bala ou espada");
 
             if (playerController != null && playerController.coldre != null)
@@ -111,10 +116,12 @@ public class Enemy_controller : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        SoundEffectManager.Play("Hit");
         HP -= damage;
         Debug.Log("HP do inimigo: " + HP);
         if (HP <= 0)
             Die();
+
     }
 
     public void Die()

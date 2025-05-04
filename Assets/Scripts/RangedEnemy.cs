@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Rendering.VirtualTexturing;
 
@@ -121,6 +120,7 @@ public class RangedEnemy : MonoBehaviour
     {
         if (timeToFire <= 0f)
         {
+            SoundEffectManager.Play("EnemyShoot");
             Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
             timeToFire = fireRate;
             isShot = true;
@@ -168,6 +168,7 @@ public class RangedEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        SoundEffectManager.Play("Hit");
         HP -= damage;
         Debug.Log("HP do inimigo: " + HP);
         if (HP <= 0)

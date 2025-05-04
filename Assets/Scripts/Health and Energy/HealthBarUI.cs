@@ -64,4 +64,11 @@ public class HealthBarUI : MonoBehaviour
             Debug.Log("hpTxt é nulo");
         }
     }
+
+    public void AtualizarEnergiaMaxima(int novaEnergiaMax)
+    {
+        sliderEnergy.maxValue = novaEnergiaMax;
+        UpdateHealthUI(); // Atualiza o texto também
+    }
+
 }

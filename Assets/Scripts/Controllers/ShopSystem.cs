@@ -19,7 +19,7 @@ public class ShopSystem : MonoBehaviour
     [SerializeField] private GameObject ShopInfo;
     private Animator anim;
     private bool isShowingInfo = false;
-
+    
 
 
 
@@ -67,6 +67,7 @@ public class ShopSystem : MonoBehaviour
     {
         if (detectionArea.detectedObjs.Count > 0 && Input.GetKeyDown(KeyCode.E))
         {
+            SoundEffectManager.Play("Buy");
             BuyItem();
         }
 
@@ -92,11 +93,23 @@ public class ShopSystem : MonoBehaviour
 
     private void ShowShopInfo()
     {
-        if (currentItem == null) return; // 🔒 Garante que não tente acessar item nulo
+        if (currentItem == null) return;
+
+        if (ShopInfo == null)
+        {
+            Debug.LogError("❌ ShopInfo GameObject está nulo!");
+            return;
+        }
+
+        var info = ShopInfo.GetComponent<ShopInfo>();
+        if (info == null)
+        {
+            Debug.LogError("❌ Script 'ShopInfo' não está anexado ao GameObject!");
+            return;
+        }
 
         anim.Play("ShopInfo");
 
-        var info = ShopInfo.GetComponent<ShopInfo>();
         info.NameTxt.text = currentItem.name;
         info.CostTxt.text = $"Custo: {coinRequery}";
 
@@ -190,8 +203,15 @@ public class ShopSystem : MonoBehaviour
                 newItem.transform.localPosition = Vector3.zero;
                 newItem.transform.localRotation = Quaternion.identity;
                 newItem.SetActive(true);
+            Collider2D collider = newItem.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                collider.enabled = false;
+                Debug.Log($"Colisor desativado da arma comprada: {newItem.name}");
+            }
 
-                SistemaArma sistemaArma = newItem.GetComponent<SistemaArma>();
+
+            SistemaArma sistemaArma = newItem.GetComponent<SistemaArma>();
                 if (sistemaArma != null)
                 {
                     sistemaArma.CDTiro();

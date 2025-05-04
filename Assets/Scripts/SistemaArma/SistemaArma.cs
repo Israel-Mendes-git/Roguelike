@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SistemaArma : MonoBehaviour
@@ -23,6 +22,15 @@ public class SistemaArma : MonoBehaviour
     [SerializeField] public SpriteRenderer srWeapon;
     private float firePointOriginalX;
 
+    public bool isFire;
+    public bool isNature;
+    public bool isIce;
+    public bool isSmg;
+    public bool isBow;
+    public bool isLazer;
+    public bool isPistol;
+    public bool isDuck;
+    public bool isCard;
 
     private void Start()
     {
@@ -46,6 +54,42 @@ public class SistemaArma : MonoBehaviour
         if (Input.GetMouseButton(0) && podeAtirar)
         {
             podeAtirar = false;
+            if(isFire)
+            {
+                SoundEffectManager.Play("Fire");
+            }
+            if(isNature)
+            {
+                SoundEffectManager.Play("Nature");
+            }
+            if (isIce)
+            {
+                SoundEffectManager.Play("Ice");
+            }
+            if (isPistol)
+            {
+                SoundEffectManager.Play("pistol");
+            }
+            if (isDuck)
+            {
+                SoundEffectManager.Play("quack");
+            }
+            if(isLazer)
+            {
+                SoundEffectManager.Play("lazer");
+            }
+            if (isSmg)
+            {
+                SoundEffectManager.Play("Smg");
+            }
+            if(isBow)
+            {
+                SoundEffectManager.Play("Bow");
+            }
+            if (isCard)
+            {
+                SoundEffectManager.Play("Card");
+            }
             Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
             Invoke("CDTiro", tempoEntreTiros);
             controller.Energy -= energy;

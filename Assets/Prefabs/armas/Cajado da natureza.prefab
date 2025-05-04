@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 748066282569339708}
   - component: {fileID: 7921033855731733312}
   - component: {fileID: 1085256731976015377}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cajado da natureza
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -162,9 +162,18 @@ MonoBehaviour:
   podeAtirar: 1
   pontoDeFogo: {fileID: 5504246540643136539}
   tiro: {fileID: 7812221749153112124, guid: 821851a9421ac9f409e51fbff8c02792, type: 3}
-  damage: 3
+  damage: 2
   energy: 2
   srWeapon: {fileID: 7062767528229920697}
+  isFire: 0
+  isNature: 1
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!1 &7760579573594894756
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5504246540643136539}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

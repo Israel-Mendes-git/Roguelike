@@ -28,6 +28,7 @@ public class HealthIncrement : MonoBehaviour
         {
             Debug.Log("Colisão com Player confirmada.");
             Player_Controller player = collision.gameObject.GetComponent<Player_Controller>();
+            SoundEffectManager.Play("heal");
 
             if (player != null)
             {

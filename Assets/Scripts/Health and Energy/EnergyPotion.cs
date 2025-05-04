@@ -16,6 +16,7 @@ public class EnergyPotion : MonoBehaviour
             Destroy(gameObject);
             Player_Controller player = collision.gameObject.GetComponent<Player_Controller>();
             HealthBarUI healthBar = collision.gameObject.GetComponent<HealthBarUI>();
+            SoundEffectManager.Play("Energy");
             if (player != null)
             {
 

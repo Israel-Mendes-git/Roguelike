@@ -1,46 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
     private Animator anim;
-    public Canvas transition;
-    public Canvas canvas;
+
+    [Header("Referências de Objetos")]
+    public Canvas transition;               // Canvas da transição
+    public GameObject mainMenuCanvas;       // Menu principal
+    [SerializeField] private GameObject optionsMenu; // Menu de opções
+    [SerializeField] private GameObject controlsMenu;
 
     private void Start()
     {
         anim = transition.GetComponent<Animator>();
+
     }
 
     public void Transition(string cena)
     {
+        Debug.Log("a transição foi ativada");
         StartCoroutine(LoadScene(cena));
     }
 
-    //carrega uma cena específica
     IEnumerator LoadScene(string cena)
     {
+        Debug.Log("Trigger será chamado");
         anim.SetTrigger("ButtonPressed");
+        Debug.Log("Trigger chamado, esperando 2 segundos");
         yield return new WaitForSeconds(2f);
-        Destroy(canvas);
-
-
-        //carrega a cena 
+        Debug.Log("Tempo esperado, carregando cena: " + cena);
         SceneManager.LoadScene(cena);
         
     }
 
-    //função para sair do jogo
-    public void QuitGame()
+
+    public void EnableOptions()
     {
-        //sai da aplicação 
-        Application.Quit();
+        optionsMenu.SetActive(true);
+    }
+    public void EnableControls()
+    {
+        controlsMenu.SetActive(true);
+    }
+    public void DisableControls()
+    {
+        controlsMenu.SetActive(false);
+    }
+    public void DisableOptions()
+    {
+        optionsMenu.SetActive(false);
     }
 
-
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

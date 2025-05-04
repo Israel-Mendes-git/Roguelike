@@ -22,6 +22,8 @@ TagManager:
   - Portal
   - Walls
   - Boss
+  - SFXSlider
+  - MusicSlider
   layers:
   - Default
   - TransparentFX

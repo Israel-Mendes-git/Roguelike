@@ -172,3 +172,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnergyRestore: 50
+  potion: {fileID: 7458853087438472190}

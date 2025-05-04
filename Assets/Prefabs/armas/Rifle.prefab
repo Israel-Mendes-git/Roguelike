@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1741387130215540504}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo (1)
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1495843190865735082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.48655, y: -3.4803252, z: 0}
+  m_LocalPosition: {x: -0.82, y: 5.85, z: 0}
   m_LocalScale: {x: 0.31134176, y: 0.29417166, z: 2.5839}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 3996198487525225025}
   - component: {fileID: 7869738008636913328}
   - component: {fileID: 7859729563889622908}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Rifle
-  m_TagString: Untagged
+  m_TagString: Arma
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,9 +59,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2930650517291161334}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.931353, y: 0.21045363, z: 0.027995508}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.20886, y: 0.1972184, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1741387130215540504}
@@ -151,7 +151,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -1.2631878, y: 0.5535519}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -162,7 +162,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 16, y: 16}
+  m_Size: {x: 2.758311, y: 10.095438}
   m_EdgeRadius: 0
 --- !u!114 &7869738008636913328
 MonoBehaviour:
@@ -190,9 +190,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   srGun: {fileID: 3141336040702931999}
   tempoEntreTiros: 1
-  podeAtirar: 0
+  podeAtirar: 1
   pontoDeFogo: {fileID: 1741387130215540504}
   tiro: {fileID: 7812221749153112124, guid: 38401a063e5a3294ab6df9b631dfd91f, type: 3}
   damage: 2
   energy: 1
   srWeapon: {fileID: 3141336040702931999}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 1
+  isDuck: 0
+  isCard: 0

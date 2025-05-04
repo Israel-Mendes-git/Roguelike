@@ -6,11 +6,19 @@ public class Tiro : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float tempoDeVida;
+    public bool isPistol;
+
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         Destroy(gameObject, tempoDeVida);
+        if (isPistol)
+        {
+            anim.Play("Bullet Animation");
+        }
     }
 
     private void FixedUpdate()

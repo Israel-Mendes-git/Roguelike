@@ -112,6 +112,7 @@ public class BossController : MonoBehaviour
     {
         if (timeToFire <= 0f)
         {
+            SoundEffectManager.Play("boss");
             Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
             timeToFire = fireRate;
             isShot = true;

@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: tiro cajado verde Animation
+  m_Name: Bullet Animation
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -215,13 +215,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8750713127957330263}
-    m_Position: {x: 200, y: 0, z: 0}
+    m_Position: {x: 280, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7353936687993749492}
-    m_Position: {x: 235, y: 65, z: 0}
+    m_Position: {x: 510, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -337409293083427755}
-    m_Position: {x: 270, y: 130, z: 0}
+    m_Position: {x: 460, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2035097684913144352}
     m_Position: {x: 305, y: 195, z: 0}

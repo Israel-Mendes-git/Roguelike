@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 690183680149135206}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PontoDeFogo
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7983325685540802869}
   - component: {fileID: 4021576291531094134}
   - component: {fileID: 5252269833027149637}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: 'Zarabatana '
   m_TagString: Arma
   m_Icon: {fileID: 0}
@@ -196,3 +196,12 @@ MonoBehaviour:
   damage: 2
   energy: 2
   srWeapon: {fileID: 9053024671039868669}
+  isFire: 0
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 1
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0

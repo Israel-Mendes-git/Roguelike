@@ -5,12 +5,11 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     private Player_Controller player;
-    private Collider2D collider;
 
     void Start()
     {
         player = FindObjectOfType<Player_Controller>();
-        collider = GetComponent<Collider2D>();
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -25,10 +24,14 @@ public class ItemPickUp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            collider.enabled = true;
             DropWeapon();
+
+            BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+            if (boxCollider != null && transform.parent == null) // Só ativa se estiver no chão
+                boxCollider.enabled = true;
         }
     }
+
 
     void PickUpWeapon()
     {
@@ -60,7 +63,23 @@ public class ItemPickUp : MonoBehaviour
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
-        collider.enabled = false;
+
+        // Garante que qualquer colisor seja desativado
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = false;
+            Debug.Log($"Colisor da arma '{gameObject.name}' desativado após coleta.");
+        }
+
+        // Remove a marca de "arma dropada"
+        DroppedWeaponIdentifier identifier = GetComponent<DroppedWeaponIdentifier>();
+        if (identifier != null)
+        {
+            Destroy(identifier);
+        }
+
+
     }
 
 
@@ -74,12 +93,16 @@ public class ItemPickUp : MonoBehaviour
             armaPrincipal.position = player.transform.position + new Vector3(2, 0, 0);
             armaPrincipal.gameObject.SetActive(true);
 
-            if (armaPrincipal.CompareTag("Espada"))
+            // Marca como dropada para ser destruída ao passar de fase
+            if (armaPrincipal.GetComponent<DroppedWeaponIdentifier>() == null)
             {
-                BoxCollider2D collider = armaPrincipal.GetComponent<BoxCollider2D>();
-                if (collider != null)
-                    collider.enabled = true;
+                armaPrincipal.gameObject.AddComponent<DroppedWeaponIdentifier>();
             }
+
+            // Reativa o collider
+            BoxCollider2D boxCollider = armaPrincipal.GetComponent<BoxCollider2D>();
+            if (boxCollider != null)
+                boxCollider.enabled = true;
 
             // Se existir arma secundária, ela vira a nova principal
             if (player.coldreSecundário.childCount > 0)
@@ -92,6 +115,7 @@ public class ItemPickUp : MonoBehaviour
             }
         }
     }
+
 
 
 }

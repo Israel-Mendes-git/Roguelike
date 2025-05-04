@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Heal: 3
+  potion: {fileID: 3693547027469205308}
 --- !u!50 &4806132951207984769
 Rigidbody2D:
   serializedVersion: 4

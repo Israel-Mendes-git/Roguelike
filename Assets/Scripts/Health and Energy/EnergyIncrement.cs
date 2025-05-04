@@ -28,23 +28,24 @@ public class EnergyIncrement : MonoBehaviour
         {
             Debug.Log("Colisão com Player confirmada.");
             Player_Controller player = collision.gameObject.GetComponent<Player_Controller>();
-
+            SoundEffectManager.Play("Energy");
             if (player != null)
             {
                 Debug.Log("Player_Controller encontrado.");
 
+                player.MaxEnergy += energyIncrement;
+                player.Energy += energyIncrement;
+
                 if (healthBar != null)
                 {
-                    healthBar.sliderEnergy.maxValue += energyIncrement;
-                    healthBar.sliderEnergy.value += energyIncrement;
+                    healthBar.AtualizarEnergiaMaxima(player.MaxEnergy);
+                    healthBar.sliderEnergy.value = player.Energy;
                 }
+
                 else
                 {
                     Debug.LogError("healthBar ainda é null!");
                 }
-
-                player.MaxEnergy += energyIncrement;
-                player.Energy += energyIncrement;
 
                 Debug.Log("HP Atual: " + player.Energy);
                 Debug.Log("HP Máximo: " + player.MaxEnergy);

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3666607830453294293}
   - component: {fileID: 4352211789914015331}
   - component: {fileID: 8977764112460688543}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sabre De Luz
   m_TagString: Espada
   m_Icon: {fileID: 0}
@@ -182,4 +182,4 @@ MonoBehaviour:
   meleeSpeed: 1
   damage: 5
   srWeapon: {fileID: 718827516714604323}
-  animationTime: 0.5
+  animationTime: 0.7

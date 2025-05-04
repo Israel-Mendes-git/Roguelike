@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4710581026307525701}
   m_Layer: 0
   m_Name: Cajado de fogo
-  m_TagString: Untagged
+  m_TagString: Arma
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7105996338484379467}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.692, y: -1.8411, z: 0.027995508}
   m_LocalScale: {x: 0.169085, y: 0.15893765, z: 1}
   m_ConstrainProportionsScale: 0
@@ -153,6 +153,15 @@ MonoBehaviour:
   damage: 5
   energy: 3
   srWeapon: {fileID: 7464998742610696017}
+  isFire: 1
+  isNature: 0
+  isIce: 0
+  isSmg: 0
+  isBow: 0
+  isLazer: 0
+  isPistol: 0
+  isDuck: 0
+  isCard: 0
 --- !u!114 &4710581026307525701
 MonoBehaviour:
   m_ObjectHideFlags: 0
